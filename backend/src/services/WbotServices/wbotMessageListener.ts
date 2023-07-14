@@ -25,6 +25,7 @@ import UpdateTicketService from "../TicketServices/UpdateTicketService";
 import CreateContactService from "../ContactServices/CreateContactService";
 import GetContactService from "../ContactServices/GetContactService";
 import formatBody from "../../helpers/Mustache";
+import ListTemplatesService from "../TemplateServices/ListTemplatesService";
 
 interface Session extends Client {
   id?: number;
@@ -66,15 +67,15 @@ const verifyQuotedMessage = async (
 
 // generate random id string for file names, function got from: https://stackoverflow.com/a/1349426/1851801
 function makeRandomId(length: number) {
-    let result = '';
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    const charactersLength = characters.length;
-    let counter = 0;
-    while (counter < length) {
-      result += characters.charAt(Math.floor(Math.random() * charactersLength));
-      counter += 1;
-    }
-    return result;
+  let result = '';
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  const charactersLength = characters.length;
+  let counter = 0;
+  while (counter < length) {
+    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    counter += 1;
+  }
+  return result;
 }
 
 const verifyMediaMessage = async (
@@ -96,7 +97,7 @@ const verifyMediaMessage = async (
     const ext = media.mimetype.split("/")[1].split(";")[0];
     media.filename = `${randomId}-${new Date().getTime()}.${ext}`;
   } else {
-    media.filename = media.filename.split('.').slice(0,-1).join('.')+'.'+randomId+'.'+media.filename.split('.').slice(-1);
+    media.filename = media.filename.split('.').slice(0, -1).join('.') + '.' + randomId + '.' + media.filename.split('.').slice(-1);
   }
 
   try {
@@ -202,7 +203,7 @@ const verifyQueue = async (
     queues.forEach((queue, index) => {
       options += `*${index + 1}* - ${queue.name}\n`;
     });
-
+    console.log("chegou no listener")
     const body = formatBody(`\u200e${greetingMessage}\n${options}`, contact);
 
     const debouncedSentMessage = debounce(
@@ -304,7 +305,17 @@ const handleMessage = async (
     if (msg.hasMedia) {
       await verifyMediaMessage(msg, ticket, contact);
     } else {
-      await verifyMessage(msg, ticket, contact);
+      logger.info("ta chengando dps do has media")
+      if (msg.body.toLowerCase() == "oi") {
+        await verifyMessage(msg, ticket, contact);
+        const body = formatBody(`\u200e${"Olá sou o chatbot da imobiliária fábio liporoni, como posso ajudar?"}`, contact);
+        const template = await ListTemplatesService();
+        console.log("template:", template)
+        const sentMessage = await wbot.sendMessage(`${contact.number}@c.us`, body);
+        await verifyMessage(sentMessage, ticket, contact);
+      } else {
+        await verifyMessage(msg, ticket, contact);
+      }
     }
 
     if (
@@ -345,66 +356,7 @@ const handleMessage = async (
       }
     }
 
-    /* if (msg.type === "multi_vcard") {
-      try {
-        const array = msg.vCards.toString().split("\n");
-        let name = "";
-        let number = "";
-        const obj = [];
-        const conts = [];
-        for (let index = 0; index < array.length; index++) {
-          const v = array[index];
-          const values = v.split(":");
-          for (let ind = 0; ind < values.length; ind++) {
-            if (values[ind].indexOf("+") !== -1) {
-              number = values[ind];
-            }
-            if (values[ind].indexOf("FN") !== -1) {
-              name = values[ind + 1];
-            }
-            if (name !== "" && number !== "") {
-              obj.push({
-                name,
-                number
-              });
-              name = "";
-              number = "";
-            }
-          }
-        }
 
-        // eslint-disable-next-line no-restricted-syntax
-        for await (const ob of obj) {
-          try {
-            const cont = await CreateContactService({
-              name: ob.name,
-              number: ob.number.replace(/\D/g, "")
-            });
-            conts.push({
-              id: cont.id,
-              name: cont.name,
-              number: cont.number
-            });
-          } catch (error) {
-            if (error.message === "ERR_DUPLICATED_CONTACT") {
-              const cont = await GetContactService({
-                name: ob.name,
-                number: ob.number.replace(/\D/g, ""),
-                email: ""
-              });
-              conts.push({
-                id: cont.id,
-                name: cont.name,
-                number: cont.number
-              });
-            }
-          }
-        }
-        msg.body = JSON.stringify(conts);
-      } catch (error) {
-        console.log(error);
-      }
-    } */
   } catch (err) {
     Sentry.captureException(err);
     logger.error(`Error handling whatsapp message: Err: ${err}`);
@@ -445,6 +397,7 @@ const handleMsgAck = async (msg: WbotMessage, ack: MessageAck) => {
 const wbotMessageListener = (wbot: Session): void => {
   wbot.on("message_create", async msg => {
     handleMessage(msg, wbot);
+    console.log("ta executando?")
   });
 
   wbot.on("media_uploaded", async msg => {
