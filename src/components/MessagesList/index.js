@@ -3,6 +3,7 @@ import React, { useState, useEffect, useReducer, useRef } from "react";
 import { isSameDay, parseISO, format } from "date-fns";
 import openSocket from "../../services/socket-io";
 import clsx from "clsx";
+import ReactAudioPlayer from 'react-audio-player';
 
 import { green } from "@material-ui/core/colors";
 import {
@@ -416,6 +417,7 @@ const MessagesList = ({ ticketId, isGroup }) => {
   };
 
   const checkMessageMedia = (message) => {
+
     if (message.mediaType === "location" && message.body.split('|').length >= 2) {
       let locationParts = message.body.split('|')
       let imageLocation = locationParts[0]
@@ -467,8 +469,11 @@ const MessagesList = ({ ticketId, isGroup }) => {
     }*/
     else if ( /^.*\.(jpe?g|png|gif)?$/i.exec(message.mediaUrl) && message.mediaType === "image") {
       return <ModalImageCors imageUrl={message.mediaUrl} />;
-    } else if (message.mediaType === "audio") {
-      return <Audio url={message.mediaUrl} />
+    } else if (message.mediaType === "audio" || message.mediaType === "ptt" ) {
+      return <ReactAudioPlayer
+        src={message.mediaUrl}
+        controls
+      />
     } else if (message.mediaType === "video") {
       return (
         <video
