@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
-
+import useSound from "use-sound";
+import alertSound from "../../assets/sound.mp3";
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import SearchIcon from "@material-ui/icons/Search";
@@ -104,15 +105,21 @@ const TicketsManager = () => {
 
   const [openCount, setOpenCount] = useState(0);
   const [pendingCount, setPendingCount] = useState(0);
-
+  
   const userQueueIds = user.queues.map((q) => q.id);
   const [selectedQueueIds, setSelectedQueueIds] = useState(userQueueIds || []);
+  
+
+    const [play] = useSound(alertSound);
+    const soundAlertRef = useRef();
+        useEffect(() => {
+      soundAlertRef.current = play;
+    }, [play]);
 
   useEffect(() => {
     if (user.profile.toUpperCase() === "ADMIN") {
       setShowAllTickets(true);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -278,7 +285,12 @@ const TicketsManager = () => {
             status="open"
             showAll={showAllTickets}
             selectedQueueIds={selectedQueueIds}
-            updateCount={(val) => setOpenCount(val)}
+            updateCount={(val) => {
+              if (val > openCount) {
+                play(); // Execute the audio play
+              }
+              setOpenCount(val);
+            }}
             style={applyPanelStyle("open")}
           />
           <TicketsList
