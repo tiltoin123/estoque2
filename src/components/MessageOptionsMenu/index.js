@@ -21,7 +21,7 @@ const MessageOptionsMenu = ({ message, menuOpen, handleClose, anchorEl }) => {
     }
   };
 
-  const hanldeReplyMessage = () => {
+  const handleReplyMessage = () => {
     setReplyingMessage(message);
     handleClose();
   };
@@ -60,7 +60,7 @@ const MessageOptionsMenu = ({ message, menuOpen, handleClose, anchorEl }) => {
             {i18n.t("messageOptionsMenu.delete")}
           </MenuItem>
         )}
-        <MenuItem onClick={hanldeReplyMessage}>
+        <MenuItem onClick={handleReplyMessage}>
           {i18n.t("messageOptionsMenu.reply")}
         </MenuItem>
       </Menu>
