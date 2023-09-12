@@ -105,16 +105,15 @@ const TicketsManager = () => {
 
   const [openCount, setOpenCount] = useState(0);
   const [pendingCount, setPendingCount] = useState(0);
-  
+
   const userQueueIds = user.queues.map((q) => q.id);
   const [selectedQueueIds, setSelectedQueueIds] = useState(userQueueIds || []);
-  
 
-    const [play] = useSound(alertSound);
-    const soundAlertRef = useRef();
-        useEffect(() => {
-      soundAlertRef.current = play;
-    }, [play]);
+  const [play] = useSound(alertSound);
+  const soundAlertRef = useRef();
+  useEffect(() => {
+    soundAlertRef.current = play;
+  }, [play]);
 
   useEffect(() => {
     if (user.profile.toUpperCase() === "ADMIN") {
@@ -295,6 +294,7 @@ const TicketsManager = () => {
           />
           <TicketsList
             status="pending"
+            showAll={showAllTickets}
             selectedQueueIds={selectedQueueIds}
             updateCount={(val) => setPendingCount(val)}
             style={applyPanelStyle("pending")}
