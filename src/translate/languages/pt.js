@@ -41,15 +41,15 @@ const messages = {
         },
         messages: {
           inAttendance: {
-            title: "Em Atendimento"
+            title: "Em Atendimento",
           },
           waiting: {
-            title: "Aguardando"
+            title: "Aguardando",
           },
           closed: {
-            title: "Finalizado"
-          }
-        }
+            title: "Finalizado",
+          },
+        },
       },
       connections: {
         title: "Conexões",
@@ -108,7 +108,7 @@ const messages = {
         form: {
           name: "Nome",
           default: "Padrão",
-          farewellMessage: "Mensagem de despedida"
+          farewellMessage: "Mensagem de despedida",
         },
         buttons: {
           okAdd: "Adicionar",
@@ -388,7 +388,8 @@ const messages = {
         },
       },
       messagesInput: {
-        placeholderOpen: "Digite uma mensagem ou tecle ''/'' para utilizar as respostas rápidas cadastrada",
+        placeholderOpen:
+          "Digite uma mensagem ou tecle ''/'' para utilizar as respostas rápidas cadastrada",
         placeholderClosed:
           "Reabra ou aceite esse ticket para enviar uma mensagem.",
         signMessage: "Assinar",
@@ -457,7 +458,7 @@ const messages = {
         ERR_CREATING_MESSAGE: "Erro ao criar mensagem no banco de dados.",
         ERR_CREATING_TICKET: "Erro ao criar tíquete no banco de dados.",
         ERR_FETCH_WAPP_MSG:
-          "Erro ao buscar a mensagem no WhtasApp, talvez ela seja muito antiga.",
+          "Erro ao buscar a mensagem no WhatsApp, talvez ela seja muito antiga.",
         ERR_QUEUE_COLOR_ALREADY_EXISTS:
           "Esta cor já está em uso, escolha outra.",
         ERR_WAPP_GREETING_REQUIRED:

@@ -26,6 +26,7 @@ import toastError from "../../errors/toastError";
 const useStyles = makeStyles((theme) => ({
   ticket: {
     position: "relative",
+    height: 80,
   },
 
   pendingTicket: {
@@ -89,6 +90,7 @@ const useStyles = makeStyles((theme) => ({
   acceptButton: {
     position: "absolute",
     left: "50%",
+    top: 5,
   },
 
   ticketQueueColor: {
@@ -103,16 +105,16 @@ const useStyles = makeStyles((theme) => ({
   userTag: {
     position: "absolute",
     marginRight: 5,
-    right: 5,
-    bottom: 5,
+    left: 72,
+    bottom: 0,
     background: "#2576D2",
-    color: "#ffffff",
-    border: "1px solid #CCC",
-    padding: 1,
+    color: "#000000",
+    border: "0.5px solid #CCC",
+    padding: 0,
     paddingLeft: 5,
     paddingRight: 5,
-    borderRadius: 10,
-    fontSize: "0.9em",
+    borderRadius: 3,
+    fontSize: "0.8em",
   },
 }));
 
@@ -213,10 +215,12 @@ const TicketListItem = ({ ticket }) => {
               {ticket.whatsappId && (
                 <div
                   className={classes.userTag}
+                  style={{ backgroundColor: ticket.queue?.color || "#7C7C7C" }}
                   title={i18n.t("ticketsList.connectionTitle")}
                 >
-                  {ticket.whatsapp?.name}
+                  {ticket.queue?.name}
                 </div>
+                //essa div acima chat_47_ticket_tags trazer mais props pra esse componente, renderizar usando array.map
               )}
             </span>
           }
