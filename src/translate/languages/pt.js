@@ -266,7 +266,7 @@ const messages = {
         noTicketsTitle: "Nada aqui!",
         noTicketsMessage:
           "Nenhum ticket encontrado com esse status ou termo pesquisado",
-        connectionTitle: "Conexão que está sendo utilizada atualmente.",
+        queueTitle: "Fila que o usuário utilizou.",
         buttons: {
           accept: "Aceitar",
         },

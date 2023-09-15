@@ -108,7 +108,7 @@ const useStyles = makeStyles((theme) => ({
     left: 72,
     bottom: 0,
     background: "#2576D2",
-    color: "#000000",
+    color: "#FFFFFF",
     border: "0.5px solid #CCC",
     padding: 0,
     paddingLeft: 5,
@@ -216,7 +216,7 @@ const TicketListItem = ({ ticket }) => {
                 <div
                   className={classes.userTag}
                   style={{ backgroundColor: ticket.queue?.color || "#7C7C7C" }}
-                  title={i18n.t("ticketsList.connectionTitle")}
+                  title={i18n.t("ticketsList.queueTitle")}
                 >
                   {ticket.queue?.name}
                 </div>
