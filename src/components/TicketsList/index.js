@@ -169,7 +169,7 @@ const TicketsList = (props) => {
     setPageNumber(1);
   }, [status, searchParam, dispatch, showAll, selectedQueueIds]);
 
-  const { tickets, hasMore, loading } = useTickets({
+  const { tickets, hasMore, loading, tags } = useTickets({
     pageNumber,
     searchParam,
     status,
@@ -296,7 +296,7 @@ const TicketsList = (props) => {
             <>
               {ticketsList.map((ticket) => (
                 /* <div className={`${classes.ticketItem}`} > */
-                <TicketListItem ticket={ticket} key={ticket.id} />
+                <TicketListItem ticket={ticket} key={ticket.id} tags={tags} />
                 /* </div> */
               ))}
             </>

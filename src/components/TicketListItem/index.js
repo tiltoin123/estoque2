@@ -101,12 +101,10 @@ const useStyles = makeStyles((theme) => ({
     top: "0%",
     left: "0%",
   },
-
   userTag: {
-    position: "absolute",
-    marginRight: 5,
-    left: 72,
-    bottom: 0,
+    position: "relative",
+    bottom: -42,
+    right: 200,
     background: "#2576D2",
     color: "#FFFFFF",
     border: "0.5px solid #CCC",
@@ -115,10 +113,23 @@ const useStyles = makeStyles((theme) => ({
     paddingRight: 5,
     borderRadius: 3,
     fontSize: "0.8em",
+    display: "flex",
+    /*     justifyContent: "space-between",
+    alignItems: "flex-end",
+    margin: theme.spacing(0.1), */
   },
+  /* userTag1: {
+    border: "solid red 1px",
+  },
+  userTag2: {
+    border: "solid green 1px",
+  },
+  userTag3: {
+    border: "solid blue 1px",
+  }, */
 }));
 
-const TicketListItem = ({ ticket }) => {
+const TicketListItem = ({ ticket, tags }) => {
   const classes = useStyles();
   const history = useHistory();
   const [loading, setLoading] = useState(false);
@@ -212,16 +223,26 @@ const TicketListItem = ({ ticket }) => {
                   )}
                 </Typography>
               )}
-              {ticket.whatsappId && (
-                <div
-                  className={classes.userTag}
-                  style={{ backgroundColor: ticket.queue?.color || "#7C7C7C" }}
-                  title={i18n.t("ticketsList.queueTitle")}
-                >
-                  {ticket.queue?.name}
-                </div>
+              {
+                ticket.whatsappId &&
+                  tags.slice(0, 3).map((tag) => (
+                    <div
+                      style={{
+                        backgroundColor: ticket.queue?.color || "#7C7C7C",
+                      }}
+                      key={tag.id}
+                      className={classes.userTag}
+                      title={`${i18n.t("ticketsList.queueTitle")} - ${
+                        tag.tagName
+                      }`}
+                    >
+                      {tag.tagName}
+                    </div>
+                  ))
+
+                //{ticket.queue?.name}
                 //essa div acima chat_47_ticket_tags trazer mais props pra esse componente, renderizar usando array.map
-              )}
+              }
             </span>
           }
           secondary={
