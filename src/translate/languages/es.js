@@ -42,15 +42,15 @@ const messages = {
         },
         messages: {
           inAttendance: {
-            title: "En servicio"
+            title: "En servicio",
           },
           waiting: {
-            title: "Esperando"
+            title: "Esperando",
           },
           closed: {
-            title: "Finalizado"
-          }
-        }
+            title: "Finalizado",
+          },
+        },
       },
       connections: {
         title: "Conexiones",
@@ -128,7 +128,7 @@ const messages = {
         searchPlaceholder: "Buscar...",
         confirmationModal: {
           deleteTitle: "Borrar",
-          importTitlte: "Importar contactos",
+          importTitle: "Importar contactos",
           deleteMessage:
             "¿Estás seguro que deseas borrar este contacto? Todos los tickets relacionados se perderán.",
           importMessage:
@@ -389,7 +389,8 @@ const messages = {
         },
       },
       messagesInput: {
-        placeholderOpen: "Escriba un mensaje o presione '' / '' para usar las respuestas rápidas registradas",
+        placeholderOpen:
+          "Escriba un mensaje o presione '' / '' para usar las respuestas rápidas registradas",
         placeholderClosed:
           "Vuelva a abrir o acepte este ticket para enviar un mensaje.",
         signMessage: "Firmar",

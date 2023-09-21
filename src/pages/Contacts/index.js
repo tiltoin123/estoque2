@@ -86,6 +86,23 @@ const useStyles = makeStyles((theme) => ({
     overflowY: "scroll",
     ...theme.scrollbarStyles,
   },
+  contactTagsWrapper: {
+    display: "flex",
+    justifyContent: "space-between",
+  },
+  teste: {
+    position: "relative",
+    bottom: -8,
+    border: "0.5px solid #CCC",
+    background: "#2576D2",
+    color: "#FFFFFF",
+    padding: 0,
+    paddingLeft: 5,
+    paddingRight: 5,
+    borderRadius: 3,
+    fontSize: "0.8em",
+    display: "flex",
+  },
 }));
 
 const Contacts = () => {
@@ -103,6 +120,7 @@ const Contacts = () => {
   const [deletingContact, setDeletingContact] = useState(null);
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [hasMore, setHasMore] = useState(false);
+  const [tags, setTags] = useState([]);
 
   useEffect(() => {
     dispatch({ type: "RESET" });
@@ -120,6 +138,7 @@ const Contacts = () => {
           dispatch({ type: "LOAD_CONTACTS", payload: data.contacts });
           setHasMore(data.hasMore);
           setLoading(false);
+          setTags(data.tags);
         } catch (err) {
           toastError(err);
         }
@@ -177,7 +196,7 @@ const Contacts = () => {
     setLoading(false);
   };
 
-  const hadleEditContact = (contactId) => {
+  const handleEditContact = (contactId) => {
     setSelectedContactId(contactId);
     setContactModalOpen(true);
   };
@@ -229,7 +248,7 @@ const Contacts = () => {
             ? `${i18n.t("contacts.confirmationModal.deleteTitle")} ${
                 deletingContact.name
               }?`
-            : `${i18n.t("contacts.confirmationModal.importTitlte")}`
+            : `${i18n.t("contacts.confirmationModal.importTitle")}`
         }
         open={confirmOpen}
         onClose={setConfirmOpen}
@@ -298,45 +317,62 @@ const Contacts = () => {
           </TableHead>
           <TableBody>
             <>
-              {contacts.map((contact) => (
-                <TableRow key={contact.id}>
-                  <TableCell style={{ paddingRight: 0 }}>
-                    {<Avatar src={contact.profilePicUrl} />}
-                  </TableCell>
-                  <TableCell>{contact.name}</TableCell>
-                  <TableCell align="center">{contact.number}</TableCell>
-                  <TableCell align="center">{contact.email}</TableCell>
-                  <TableCell align="center">
-                    <IconButton
-                      size="small"
-                      onClick={() => handleSaveTicket(contact.id)}
-                    >
-                      <WhatsAppIcon />
-                    </IconButton>
-                    <IconButton
-                      size="small"
-                      onClick={() => hadleEditContact(contact.id)}
-                    >
-                      <EditIcon />
-                    </IconButton>
-                    <Can
-                      role={user.profile}
-                      perform="contacts-page:deleteContact"
-                      yes={() => (
-                        <IconButton
-                          size="small"
-                          onClick={(e) => {
-                            setConfirmOpen(true);
-                            setDeletingContact(contact);
-                          }}
-                        >
-                          <DeleteOutlineIcon />
-                        </IconButton>
-                      )}
-                    />
-                  </TableCell>
-                </TableRow>
-              ))}
+              {contacts.map((contact) => {
+                // Filter tags based on the current contact's contactId
+                const contactTags = tags.filter(
+                  (tag) => tag.contactId === contact.id
+                );
+
+                return (
+                  <TableRow key={contact.id}>
+                    <TableCell style={{ paddingRight: 0 }}>
+                      {<Avatar src={contact.profilePicUrl} />}
+                    </TableCell>
+                    <TableCell>
+                      {contact.name}
+                      <div className={classes.contactTagsWrapper}>
+                        {/* Map over filtered tags for the current contact */}
+                        {contactTags.slice(0, 3).map((tag) => (
+                          <div className={classes.teste} key={tag.id}>
+                            {tag.tagName}
+                          </div>
+                        ))}
+                      </div>
+                    </TableCell>
+                    <TableCell align="center">{contact.number}</TableCell>
+                    <TableCell align="center">{contact.email}</TableCell>
+                    <TableCell align="center">
+                      <IconButton
+                        size="small"
+                        onClick={() => handleSaveTicket(contact.id)}
+                      >
+                        <WhatsAppIcon />
+                      </IconButton>
+                      <IconButton
+                        size="small"
+                        onClick={() => handleEditContact(contact.id)}
+                      >
+                        <EditIcon />
+                      </IconButton>
+                      <Can
+                        role={user.profile}
+                        perform="contacts-page:deleteContact"
+                        yes={() => (
+                          <IconButton
+                            size="small"
+                            onClick={(e) => {
+                              setConfirmOpen(true);
+                              setDeletingContact(contact);
+                            }}
+                          >
+                            <DeleteOutlineIcon />
+                          </IconButton>
+                        )}
+                      />
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
               {loading && <TableRowSkeleton avatar columns={3} />}
             </>
           </TableBody>

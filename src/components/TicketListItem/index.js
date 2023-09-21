@@ -114,19 +114,7 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: 3,
     fontSize: "0.8em",
     display: "flex",
-    /*     justifyContent: "space-between",
-    alignItems: "flex-end",
-    margin: theme.spacing(0.1), */
   },
-  /* userTag1: {
-    border: "solid red 1px",
-  },
-  userTag2: {
-    border: "solid green 1px",
-  },
-  userTag3: {
-    border: "solid blue 1px",
-  }, */
 }));
 
 const TicketListItem = ({ ticket, tags }) => {
@@ -223,9 +211,11 @@ const TicketListItem = ({ ticket, tags }) => {
                   )}
                 </Typography>
               )}
-              {
-                ticket.whatsappId &&
-                  tags.slice(0, 3).map((tag) => (
+              {ticket.whatsappId &&
+                tags
+                  .filter((tag) => tag.contactId === ticket.contactId)
+                  .slice(0, 3)
+                  .map((tag) => (
                     <div
                       style={{
                         backgroundColor: ticket.queue?.color || "#7C7C7C",
@@ -238,11 +228,7 @@ const TicketListItem = ({ ticket, tags }) => {
                     >
                       {tag.tagName}
                     </div>
-                  ))
-
-                //{ticket.queue?.name}
-                //essa div acima chat_47_ticket_tags trazer mais props pra esse componente, renderizar usando array.map
-              }
+                  ))}
             </span>
           }
           secondary={
@@ -271,6 +257,7 @@ const TicketListItem = ({ ticket, tags }) => {
             </span>
           }
         />
+
         {ticket.status === "pending" && (
           <ButtonWithSpinner
             color="primary"

@@ -128,7 +128,7 @@ const messages = {
         searchPlaceholder: "Pesquisar...",
         confirmationModal: {
           deleteTitle: "Deletar ",
-          importTitlte: "Importar contatos",
+          importTitle: "Importar contatos",
           deleteMessage:
             "Tem certeza que deseja deletar este contato? Todos os tickets relacionados serão perdidos.",
           importMessage: "Deseja importas todos os contatos do telefone?",
