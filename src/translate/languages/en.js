@@ -7,7 +7,11 @@ const messages = {
           success: "User created successfully! Please login!",
           fail: "Error creating user. Check the reported data.",
         },
-        form: {
+        Form: {
+          name: "Business name",
+        },
+        userForm: {
+          title: "Register your user",
           name: "Name",
           email: "Email",
           password: "Password",
@@ -26,6 +30,16 @@ const messages = {
         buttons: {
           submit: "Enter",
           register: "Don't have an account? Register!",
+        },
+      },
+      verify: {
+        verifiedMessage:
+          "Your email is now verified. Click 'Continue' to return to the login page.",
+        expiredToken:
+          "Your token has expired. Click the 'Generate Token' button to get a new one.",
+        buttons: {
+          login: "Go to login",
+          newToken: "Generate new token",
         },
       },
       auth: {

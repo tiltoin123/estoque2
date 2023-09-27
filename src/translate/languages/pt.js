@@ -2,13 +2,18 @@ const messages = {
   pt: {
     translations: {
       signup: {
-        title: "Cadastre-se",
+        title: "Cadastre sua empresa",
         toasts: {
-          success: "Usuário criado com sucesso! Faça seu login!!!.",
-          fail: "Erro ao criar usuário. Verifique os dados informados.",
+          success:
+            "Empresa cadastrada com sucesso! Faça login com seu novo usuário!!!.",
+          fail: "Erro ao cadastrar Empresa. Verifique os dados informados.",
         },
-        form: {
-          name: "Nome",
+        Form: {
+          name: "Nome da empresa",
+        },
+        userForm: {
+          title: "Cadastre seu usuário",
+          name: "Usuário",
           email: "Email",
           password: "Senha",
         },
@@ -26,6 +31,16 @@ const messages = {
         buttons: {
           submit: "Entrar",
           register: "Não tem um conta? Cadastre-se!",
+        },
+      },
+      verify: {
+        verifiedMessage:
+          "Seu foi verificado com sucesso, clique no botão abaixo para retornar à página de login.",
+        expiredToken:
+          "Seu token expirou, clique no botão gerar token para obter um novo.",
+        buttons: {
+          login: "Ir para o login",
+          newToken: "Gerar novo token",
         },
       },
       auth: {
