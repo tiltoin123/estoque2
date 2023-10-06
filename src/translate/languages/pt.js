@@ -10,6 +10,7 @@ const messages = {
         },
         Form: {
           name: "Nome da empresa",
+          site: "Endereço do site, ex:imobiliaria.com.br",
         },
         userForm: {
           title: "Cadastre seu usuário",

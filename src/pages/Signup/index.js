@@ -79,7 +79,13 @@ const SignUp = () => {
   const classes = useStyles();
   const history = useHistory();
 
-  const initialState = { storeName: "", name: "", email: "", password: "" };
+  const initialState = {
+    storeName: "",
+    storeSite: "",
+    name: "",
+    email: "",
+    password: "",
+  };
   const [showPassword, setShowPassword] = useState(false);
   const [user] = useState(initialState);
 
@@ -128,6 +134,20 @@ const SignUp = () => {
                     fullWidth
                     id="storeName"
                     label={i18n.t("signup.Form.name")}
+                    autoFocus
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <Field
+                    as={TextField}
+                    autoComplete="storeSite"
+                    name="storeSite"
+                    error={touched.storeName && Boolean(errors.storeName)}
+                    helperText={touched.storeName && errors.storeName}
+                    variant="outlined"
+                    fullWidth
+                    id="storeSite"
+                    label={i18n.t("signup.Form.site")}
                     autoFocus
                   />
                 </Grid>

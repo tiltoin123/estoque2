@@ -3,7 +3,7 @@ import React, { useState, useEffect, useReducer, useRef } from "react";
 import { isSameDay, parseISO, format } from "date-fns";
 import openSocket from "../../services/socket-io";
 import clsx from "clsx";
-import ReactAudioPlayer from 'react-audio-player';
+import ReactAudioPlayer from "react-audio-player";
 
 import { green } from "@material-ui/core/colors";
 import {
@@ -417,22 +417,27 @@ const MessagesList = ({ ticketId, isGroup }) => {
   };
 
   const checkMessageMedia = (message) => {
+    if (
+      message.mediaType === "location" &&
+      message.body.split("|").length >= 2
+    ) {
+      let locationParts = message.body.split("|");
+      let imageLocation = locationParts[0];
+      let linkLocation = locationParts[1];
 
-    if (message.mediaType === "location" && message.body.split('|').length >= 2) {
-      let locationParts = message.body.split('|')
-      let imageLocation = locationParts[0]
-      let linkLocation = locationParts[1]
-
-      let descriptionLocation = null
+      let descriptionLocation = null;
 
       if (locationParts.length > 2)
-        descriptionLocation = message.body.split('|')[2]
+        descriptionLocation = message.body.split("|")[2];
 
-      return <LocationPreview image={imageLocation} link={linkLocation} description={descriptionLocation} />
-    }
-    else if (message.mediaType === "vcard") {
-      //console.log("vcard")
-      //console.log(message)
+      return (
+        <LocationPreview
+          image={imageLocation}
+          link={linkLocation}
+          description={descriptionLocation}
+        />
+      );
+    } else if (message.mediaType === "vcard") {
       let array = message.body.split("\n");
       let obj = [];
       let contact = "";
@@ -448,32 +453,14 @@ const MessagesList = ({ ticketId, isGroup }) => {
           }
         }
       }
-      return <VcardPreview contact={contact} numbers={obj[0]?.number} />
-    }
-    /*else if (message.mediaType === "multi_vcard") {
-      console.log("multi_vcard")
-      console.log(message)
-    	
-      if(message.body !== null && message.body !== "") {
-        let newBody = JSON.parse(message.body)
-        return (
-          <>
-            {
-            newBody.map(v => (
-              <VcardPreview contact={v.name} numbers={v.number} />
-            ))
-            }
-          </>
-        )
-      } else return (<></>)
-    }*/
-    else if ( /^.*\.(jpe?g|png|gif)?$/i.exec(message.mediaUrl) && message.mediaType === "image") {
+      return <VcardPreview contact={contact} numbers={obj[0]?.number} />;
+    } else if (
+      /^.*\.(jpe?g|png|gif)?$/i.exec(message.mediaUrl) &&
+      message.mediaType === "image"
+    ) {
       return <ModalImageCors imageUrl={message.mediaUrl} />;
-    } else if (message.mediaType === "audio" || message.mediaType === "ptt" ) {
-      return <ReactAudioPlayer
-        src={message.mediaUrl}
-        controls
-      />
+    } else if (message.mediaType === "audio" || message.mediaType === "ptt") {
+      return <ReactAudioPlayer src={message.mediaUrl} controls />;
     } else if (message.mediaType === "video") {
       return (
         <video
@@ -619,9 +606,11 @@ const MessagesList = ({ ticketId, isGroup }) => {
                     {message.contact?.name}
                   </span>
                 )}
-                {(message.mediaUrl || message.mediaType === "location" || message.mediaType === "vcard"
-                  //|| message.mediaType === "multi_vcard" 
-                ) && checkMessageMedia(message)}
+                {(message.mediaUrl ||
+                  message.mediaType === "location" ||
+                  message.mediaType === "vcard") &&
+                  //|| message.mediaType === "multi_vcard"
+                  checkMessageMedia(message)}
                 <div className={classes.textContentItem}>
                   {message.quotedMsg && renderQuotedMessage(message)}
                   <MarkdownWrapper>{message.body}</MarkdownWrapper>
@@ -648,9 +637,11 @@ const MessagesList = ({ ticketId, isGroup }) => {
                 >
                   <ExpandMore />
                 </IconButton>
-                {(message.mediaUrl || message.mediaType === "location" || message.mediaType === "vcard"
-                  //|| message.mediaType === "multi_vcard" 
-                ) && checkMessageMedia(message)}
+                {(message.mediaUrl ||
+                  message.mediaType === "location" ||
+                  message.mediaType === "vcard") &&
+                  //|| message.mediaType === "multi_vcard"
+                  checkMessageMedia(message)}
                 <div
                   className={clsx(classes.textContentItem, {
                     [classes.textContentItemDeleted]: message.isDeleted,

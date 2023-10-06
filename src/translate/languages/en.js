@@ -9,6 +9,7 @@ const messages = {
         },
         Form: {
           name: "Business name",
+          site: "Business website",
         },
         userForm: {
           title: "Register your user",
