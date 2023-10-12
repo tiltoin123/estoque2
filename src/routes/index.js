@@ -17,6 +17,7 @@ import Queues from "../pages/Queues/";
 import { AuthProvider } from "../context/Auth/AuthContext";
 import { WhatsAppsProvider } from "../context/WhatsApp/WhatsAppsContext";
 import Route from "./Route";
+import StoreAi from "../pages/StoreAi";
 
 const Routes = () => {
   return (
@@ -49,6 +50,7 @@ const Routes = () => {
                 component={QuickAnswers}
                 isPrivate
               />
+              <Route exact path="/storeai" component={StoreAi} isPrivate />
               <Route exact path="/Settings" component={Settings} isPrivate />
               <Route exact path="/Queues" component={Queues} isPrivate />
             </LoggedInLayout>

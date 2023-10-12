@@ -303,6 +303,7 @@ const messages = {
           administration: "Administration",
           users: "Users",
           settings: "Settings",
+          storeAi: "Business Artificial Inteligence",
         },
         appBar: {
           user: {

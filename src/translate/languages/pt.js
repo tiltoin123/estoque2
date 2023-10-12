@@ -214,6 +214,22 @@ const messages = {
           cancel: "Cancelar",
         },
       },
+      storeAiModal: {
+        title: {
+          add: "Criar inteligência artificial.",
+          edit: "Editar inteligência artificial.",
+        },
+        form: {
+          name: "Nome",
+          systemPrompt: "Instruções para inteligência artificial.",
+        },
+        buttons: {
+          okAdd: "Adicionar",
+          okEdit: "Salvar",
+          cancel: "Cancelar",
+        },
+        success: "Inteligência artificial salva com sucesso.",
+      },
       userModal: {
         title: {
           add: "Adicionar usuário",
@@ -307,6 +323,7 @@ const messages = {
           administration: "Administração",
           users: "Usuários",
           settings: "Configurações",
+          storeAi: "Inteligência Artificial",
         },
         appBar: {
           user: {
@@ -390,6 +407,22 @@ const messages = {
               disabled: "Desativado",
             },
           },
+        },
+      },
+      storeAi: {
+        title: "Inteligência artificial",
+        table: {
+          name: "Nome",
+          systemPrompt: "Instruções para inteligência artificial",
+          actions: "Ações",
+        },
+        buttons: {
+          add: "Adicionar inteligência artificial",
+        },
+        confirmationModal: {
+          deleteTitle: "Excluir",
+          deleteMessage:
+            "Você tem certeza? Essa ação não pode ser revertida! Seus usuário não poderão mais interagir com está inteligência artificial.",
         },
       },
       messagesList: {
