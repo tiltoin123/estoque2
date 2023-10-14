@@ -211,6 +211,22 @@ const messages = {
           cancel: "Cancel",
         },
       },
+      storeAiModal: {
+        title: {
+          add: "Create an artificial inteligence.",
+          edit: "Edite an artificial inteligence.",
+        },
+        form: {
+          name: "Name",
+          systemPrompt: "Instructions for artificial intelligence.",
+        },
+        buttons: {
+          okAdd: "Add",
+          okEdit: "Save",
+          cancel: "Cancel",
+        },
+        success: "Inteligência artificial salva com sucesso.",
+      },
       userModal: {
         title: {
           add: "Add user",
@@ -372,7 +388,7 @@ const messages = {
         confirmationModal: {
           deleteTitle: "Delete",
           deleteMessage:
-            "All user data will be lost. Users' open tickets will be moved to queue.",
+            "This action cannot be undone, your user will not be able to interact with it anymore. Are you sure you want to delete this artificial inteligence?",
         },
       },
       settings: {
@@ -386,6 +402,26 @@ const messages = {
               disabled: "Disabled",
             },
           },
+        },
+      },
+      storeAi: {
+        title: "Artificial inteligence",
+        searchPlaceholder: "Search...",
+        table: {
+          name: "Name",
+          systemPrompt: "Instructions for artificial intelligence",
+          actions: "Actions",
+        },
+        buttons: {
+          add: "Add artificial inteligence",
+        },
+        toasts: {
+          deleted: "Artificial inteligence deleted successfully",
+        },
+        confirmationModal: {
+          deleteTitle: "Delete",
+          deleteMessage:
+            "Você tem certeza? Essa ação não pode ser revertida! Seus usuário não poderão mais interagir com está inteligência artificial.",
         },
       },
       messagesList: {

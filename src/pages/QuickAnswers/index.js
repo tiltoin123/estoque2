@@ -86,14 +86,14 @@ const useStyles = makeStyles((theme) => ({
 const QuickAnswers = () => {
   const classes = useStyles();
 
+  const [quickAnswers, dispatch] = useReducer(reducer, []);
   const [loading, setLoading] = useState(false);
   const [pageNumber, setPageNumber] = useState(1);
-  const [searchParam, setSearchParam] = useState("");
-  const [quickAnswers, dispatch] = useReducer(reducer, []);
-  const [selectedQuickAnswers, setSelectedQuickAnswers] = useState(null);
   const [quickAnswersModalOpen, setQuickAnswersModalOpen] = useState(false);
-  const [deletingQuickAnswers, setDeletingQuickAnswers] = useState(null);
+  const [selectedQuickAnswers, setSelectedQuickAnswers] = useState(null);
   const [confirmModalOpen, setConfirmModalOpen] = useState(false);
+  const [searchParam, setSearchParam] = useState("");
+  const [deletingQuickAnswers, setDeletingQuickAnswers] = useState(null);
   const [hasMore, setHasMore] = useState(false);
 
   useEffect(() => {

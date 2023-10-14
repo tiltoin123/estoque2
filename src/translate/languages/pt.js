@@ -411,6 +411,7 @@ const messages = {
       },
       storeAi: {
         title: "Inteligência artificial",
+        searchPlaceholder: "Pesquisar...",
         table: {
           name: "Nome",
           systemPrompt: "Instruções para inteligência artificial",
@@ -418,6 +419,9 @@ const messages = {
         },
         buttons: {
           add: "Adicionar inteligência artificial",
+        },
+        toasts: {
+          deleted: "Inteligência artificial excluída com sucesso.",
         },
         confirmationModal: {
           deleteTitle: "Excluir",

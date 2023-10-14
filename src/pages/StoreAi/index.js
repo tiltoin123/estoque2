@@ -12,9 +12,11 @@ import {
   TableCell,
   TableHead,
   TableRow,
-  Typography,
+  TextField,
+  InputAdornment,
 } from "@material-ui/core";
 
+import SearchIcon from "@material-ui/icons/Search";
 import MainContainer from "../../components/MainContainer";
 import MainHeader from "../../components/MainHeader";
 import MainHeaderButtonsWrapper from "../../components/MainHeaderButtonsWrapper";
@@ -56,7 +58,7 @@ const reducer = (state, action) => {
 
   if (action.type === "UPDATE_STOREAI") {
     const storeAi = action.payload;
-    const storeAiIndex = state.findIndex((u) => u.id === storeAi.id);
+    const storeAiIndex = state.findIndex((s) => s.id === storeAi.id);
 
     if (storeAiIndex !== -1) {
       state[storeAiIndex] = storeAi;
@@ -85,25 +87,38 @@ const StoreAi = () => {
 
   const [storeAi, dispatch] = useReducer(reducer, []);
   const [loading, setLoading] = useState(false);
-
+  const [pageNumber, setPageNumber] = useState(1);
   const [storeAiModalOpen, setStoreAiModalOpen] = useState(false);
   const [selectedStoreAi, setSelectedStoreAiOpen] = useState(null);
   const [confirmModalOpen, setConfirmModalOpen] = useState(false);
+  const [searchParam, setSearchParam] = useState("");
+  const [deletingStoreAi, setDeletingStoreAi] = useState(null);
+  const [hasMore, setHasMore] = useState(false);
 
   useEffect(() => {
-    (async () => {
-      setLoading(true);
-      try {
-        const { data } = await api.get("/storeai");
-        dispatch({ type: "LOAD_STOREAI", payload: data });
+    dispatch({ type: "RESET" });
+    setPageNumber(1);
+  }, [searchParam]);
 
-        setLoading(false);
-      } catch (err) {
-        toastError(err);
-        setLoading(false);
-      }
-    })();
-  }, []);
+  useEffect(() => {
+    setLoading(true);
+    const delayDebounceFn = setTimeout(() => {
+      const fetchStoreAi = async () => {
+        try {
+          const { data } = await api.get("/storeai", {
+            params: { searchParam, pageNumber },
+          });
+          dispatch({ type: "LOAD_STOREAI", payload: data.storeAi });
+          setHasMore(data.hasMore);
+          setLoading(false);
+        } catch (err) {
+          toastError(err);
+        }
+      };
+      fetchStoreAi();
+    }, 500);
+    return () => clearTimeout(delayDebounceFn);
+  }, [searchParam, pageNumber]);
 
   useEffect(() => {
     const socket = openSocket();
@@ -114,7 +129,7 @@ const StoreAi = () => {
       }
 
       if (data.action === "delete") {
-        dispatch({ type: "DELETE_STOREAI", payload: data.storeAi });
+        dispatch({ type: "DELETE_STOREAI", payload: +data.storeAi });
       }
     });
 
@@ -123,9 +138,13 @@ const StoreAi = () => {
     };
   }, []);
 
+  const handleSearch = (event) => {
+    setSearchParam(event.target.value.toLowerCase());
+  };
+
   const handleOpenStoreAiModal = () => {
-    setStoreAiModalOpen(true);
     setSelectedStoreAiOpen(null);
+    setStoreAiModalOpen(true);
   };
 
   const handleCloseStoreAiModal = () => {
@@ -146,11 +165,26 @@ const StoreAi = () => {
   const handleDeleteStoreAi = async (storeAiId) => {
     try {
       await api.delete(`/storeai/${storeAiId}`);
-      toast.success(i18n.t("storeai deleted successfully!"));
+      toast.success(i18n.t("storeAi.toasts.deleted"));
     } catch (err) {
       toastError(err);
     }
+    setDeletingStoreAi(null);
+    setSearchParam("");
+    setPageNumber(1);
     setSelectedStoreAiOpen(null);
+  };
+
+  const loadMore = () => {
+    setPageNumber((prevState) => prevState + 1);
+  };
+
+  const handleScroll = (e) => {
+    if (!hasMore || loading) return;
+    const { scrollTop, scrollHeight, clientHeight } = e.currentTarget;
+    if (scrollHeight - (scrollTop + 100) < clientHeight) {
+      loadMore();
+    }
   };
 
   return (
@@ -176,6 +210,19 @@ const StoreAi = () => {
       <MainHeader>
         <Title>{i18n.t("storeAi.title")}</Title>
         <MainHeaderButtonsWrapper>
+          <TextField
+            placeholder={i18n.t("storeAi.searchPlaceholder")}
+            type="search"
+            value={searchParam}
+            onChange={handleSearch}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <SearchIcon style={{ color: "gray" }} />
+                </InputAdornment>
+              ),
+            }}
+          />
           <Button
             variant="contained"
             color="primary"
@@ -185,7 +232,11 @@ const StoreAi = () => {
           </Button>
         </MainHeaderButtonsWrapper>
       </MainHeader>
-      <Paper className={classes.mainPaper} variant="outlined">
+      <Paper
+        className={classes.mainPaper}
+        variant="outlined"
+        onScroll={handleScroll}
+      >
         <Table size="small">
           <TableHead>
             <TableRow>
@@ -216,9 +267,9 @@ const StoreAi = () => {
 
                     <IconButton
                       size="small"
-                      onClick={() => {
-                        setSelectedStoreAiOpen(storeAi);
+                      onClick={(e) => {
                         setConfirmModalOpen(true);
+                        setSelectedStoreAiOpen(storeAi);
                       }}
                     >
                       <DeleteOutline />
@@ -226,7 +277,7 @@ const StoreAi = () => {
                   </TableCell>
                 </TableRow>
               ))}
-              {loading && <TableRowSkeleton columns={4} />}
+              {loading && <TableRowSkeleton columns={3} />}
             </>
           </TableBody>
         </Table>
