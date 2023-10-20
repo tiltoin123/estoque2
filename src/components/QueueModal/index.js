@@ -221,7 +221,7 @@ const QueueModal = ({ open, onClose, queueId }) => {
                 <div>
                   <QueueStoreAiSelect
                     selectedStoreAiId={selectedStoreAiId}
-                    storeAi={storeAi}
+                    //storeAi={storeAi}
                     onChange={(value) => setSelectedStoreAiId(value)}
                   />
                 </div>
