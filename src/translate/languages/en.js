@@ -338,6 +338,7 @@ const messages = {
           color: "Color",
           greeting: "Greeting message",
           actions: "Actions",
+          storeAi: "Inteligência artificial",
         },
         buttons: {
           add: "Add queue",

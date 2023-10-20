@@ -101,7 +101,6 @@ const Queues = () => {
       try {
         const { data } = await api.get("/queue");
         dispatch({ type: "LOAD_QUEUES", payload: data });
-
         setLoading(false);
       } catch (err) {
         toastError(err);
@@ -204,6 +203,9 @@ const Queues = () => {
                 {i18n.t("queues.table.greeting")}
               </TableCell>
               <TableCell align="center">
+                {i18n.t("queues.table.storeAi")}
+              </TableCell>
+              <TableCell align="center">
                 {i18n.t("queues.table.actions")}
               </TableCell>
             </TableRow>
@@ -233,6 +235,19 @@ const Queues = () => {
                         variant="body2"
                       >
                         {queue.greetingMessage}
+                      </Typography>
+                    </div>
+                  </TableCell>
+                  <TableCell align="center">
+                    <div className={classes.customTableCell}>
+                      <Typography
+                        style={{ width: 300, align: "center" }}
+                        noWrap
+                        variant="body2"
+                      >
+                        {queue?.storeAi && queue.storeAiId
+                          ? queue.storeAi.name
+                          : ""}
                       </Typography>
                     </div>
                   </TableCell>

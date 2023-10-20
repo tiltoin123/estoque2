@@ -260,6 +260,9 @@ const messages = {
       ticketsQueueSelect: {
         placeholder: "Filas",
       },
+      queueStoreAiSelect: {
+        placeholder: "Inteligências artificiais",
+      },
       tickets: {
         toasts: {
           deleted: "O ticket que você estava foi deletado.",
@@ -342,6 +345,7 @@ const messages = {
           color: "Cor",
           greeting: "Mensagem de saudação",
           actions: "Ações",
+          storeAi: "Inteligência artificial",
         },
         buttons: {
           add: "Adicionar fila",
