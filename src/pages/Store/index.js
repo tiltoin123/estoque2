@@ -323,7 +323,7 @@ const Store = () => {
             color="primary"
             onClick={handleOpenStorePatternModal}
           >
-            {i18n.t("connections.buttons.add")}
+            {i18n.t("store.pattern.buttons.add")}
           </Button>
         </MainHeaderButtonsWrapper>
       </MainHeader>
@@ -336,6 +336,12 @@ const Store = () => {
               </TableCell>
               <TableCell align="center">
                 {i18n.t("store.pattern.utility")}
+              </TableCell>
+              <TableCell align="center">
+                {i18n.t("store.pattern.target")}
+              </TableCell>
+              <TableCell align="center">
+                {i18n.t("store.pattern.filter")}
               </TableCell>
               <TableCell align="center">
                 {i18n.t("store.pattern.pattern")}
@@ -352,6 +358,8 @@ const Store = () => {
                   <TableRow key={storePattern.id}>
                     <TableCell align="center">{storePattern.name}</TableCell>
                     <TableCell align="center">{storePattern.utility}</TableCell>
+                    <TableCell align="center">{storePattern.target}</TableCell>
+                    <TableCell align="center">{storePattern.filter}</TableCell>
                     <TableCell align="center">{storePattern.pattern}</TableCell>
 
                     <TableCell align="center">

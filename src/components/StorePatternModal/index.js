@@ -16,9 +16,15 @@ import {
 } from "@material-ui/core";
 import { green } from "@material-ui/core/colors";
 import { i18n } from "../../translate/i18n";
-
+import QueueStoreAiSelect from "../QueueStoreAiSelect";
+import StorePatternQueueSelect from "../StorePatternQueueSelect";
+import StorePatternFilterSelect from "../StorePatternFilterSelect";
+import StorePatternUtilitySelect from "../StorePatternUtilitySelect";
 import api from "../../services/api";
 import toastError from "../../errors/toastError";
+import { Checkbox, ListItemText } from "@material-ui/core";
+import MenuItem from "@material-ui/core/MenuItem";
+import Select from "@material-ui/core/Select";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -65,16 +71,22 @@ const StorePatternModal = ({
   initialValues,
   onSave,
 }) => {
-  const classes = useStyles();
-  const isMounted = useRef(true);
-
   const initialState = {
     name: "",
     utility: "",
+    target: "",
     pattern: "",
+    filter: "",
   };
-
+  const classes = useStyles();
+  const isMounted = useRef(true);
+  const [selectedStoreAiId, setSelectedStoreAiId] = useState();
+  const [selectedQueueId, setSelectedQueueId] = useState();
   const [storePatterns, setStorePatterns] = useState(initialState);
+  const [selectedStorePatternFilter, setSelectedStorePatternFilter] =
+    useState();
+  const [selectStorePatternUtilitySelect, setSelectStorePatternUtilitySelect] =
+    useState();
 
   useEffect(() => {
     return () => {
@@ -118,7 +130,7 @@ const StorePatternModal = ({
         await api.post("/storePatterns", values);
       }
       handleClose();
-      toast.success(i18n.t("storeModal.success"));
+      toast.success(i18n.t("store.pattern.patternModal.success"));
     } catch (err) {
       toastError(err);
     }
@@ -135,8 +147,8 @@ const StorePatternModal = ({
       >
         <DialogTitle id="form-dialog-title">
           {storePatternsId
-            ? `${i18n.t("storeModal.title.edit")}`
-            : `${i18n.t("storeModal.title.add")}`}
+            ? `${i18n.t("store.pattern.patternModal.title.edit")}`
+            : `${i18n.t("store.pattern.patternModal.title.add")}`}
         </DialogTitle>
         <Formik
           initialValues={storePatterns}
@@ -155,7 +167,7 @@ const StorePatternModal = ({
                 <div className={classes.textStoreContainer}>
                   <Field
                     as={TextField}
-                    label={i18n.t("storeModal.form.name")}
+                    label={i18n.t("store.pattern.patternModal.form.name")}
                     name="name"
                     autoFocus
                     error={touched.name && Boolean(errors.name)}
@@ -166,23 +178,23 @@ const StorePatternModal = ({
                     fullWidth
                   />
                 </div>
-                <div className={classes.textStoreContainer}>
-                  <Field
-                    as={TextField}
-                    label={i18n.t("storeModal.form.utility")}
-                    name="utility"
-                    error={touched.utility && Boolean(errors.utility)}
-                    helperText={touched.utility && errors.utility}
-                    variant="outlined"
-                    margin="dense"
-                    className={classes.textField}
-                    fullWidth
+                <StorePatternUtilitySelect
+                  selectedStorePatternFilter={selectStorePatternUtilitySelect}
+                  onChange={(value) =>
+                    setSelectStorePatternUtilitySelect(value)
+                  }
+                />
+                <div
+                  className={classes.textStoreContainer}
+                  style={{ display: "flex" }}
+                >
+                  <StorePatternFilterSelect
+                    selectedStorePatternFilter={selectedStorePatternFilter}
+                    onChange={(value) => setSelectedStorePatternFilter(value)}
                   />
-                </div>
-                <div className={classes.textStoreContainer}>
                   <Field
                     as={TextField}
-                    label={i18n.t("storeModal.form.pattern")}
+                    label={i18n.t("store.pattern.patternModal.form.pattern")}
                     name="pattern"
                     error={touched.pattern && Boolean(errors.pattern)}
                     helperText={touched.pattern && errors.pattern}
@@ -190,6 +202,13 @@ const StorePatternModal = ({
                     margin="dense"
                     className={classes.textField}
                     fullWidth
+                  />
+                </div>
+                <div style={{ display: "flex" }}>
+                  <StorePatternQueueSelect
+                    selectedQueueId={selectedQueueId}
+                    //storeAi={storeAi}
+                    onChange={(value) => setSelectedQueueId(value)}
                   />
                 </div>
               </DialogContent>
@@ -200,7 +219,7 @@ const StorePatternModal = ({
                   disabled={isSubmitting}
                   variant="outlined"
                 >
-                  {i18n.t("storeModal.buttons.cancel")}
+                  {i18n.t("store.pattern.patternModal.buttons.cancel")}
                 </Button>
                 <Button
                   type="submit"
@@ -210,8 +229,8 @@ const StorePatternModal = ({
                   className={classes.btnWrapper}
                 >
                   {storePatternsId
-                    ? `${i18n.t("storeModal.buttons.okEdit")}`
-                    : `${i18n.t("storeModal.buttons.okAdd")}`}
+                    ? `${i18n.t("store.pattern.patternModal.buttons.okEdit")}`
+                    : `${i18n.t("store.pattern.patternModal.buttons.okAdd")}`}
                   {isSubmitting && (
                     <CircularProgress
                       size={24}

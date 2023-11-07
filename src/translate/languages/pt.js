@@ -421,12 +421,49 @@ const messages = {
         email: "Email",
         site: "Site da empresa",
         actions: "ações",
+        storeModal: {
+          title: "Editar empresa",
+          form: {
+            name: "Nome da empresa",
+            email: "Email",
+            siteUrl: "Endereço do site",
+          },
+          buttons: {
+            okEdit: "Salvar",
+            cancel: "Cancelar",
+          },
+        },
         pattern: {
           title: "Padrões",
           name: "nome do padrão",
           utility: "utilidade",
           pattern: "padrão",
+          target: "alvo",
+          filter: "filtro",
           actions: "ações",
+          buttons: {
+            add: "ADICIONAR PADRÃO",
+          },
+          patternModal: {
+            title: {
+              add: "Adicionar padrão",
+              edit: "Editar padrão",
+            },
+            form: {
+              name: "Nome do padrão",
+              utility: "Função do padrão",
+              filter: "Tipo de filtro",
+              pattern: "Padrão",
+              target: "Alvo",
+            },
+            success:
+              "O padrão foi adicionado com sucesso seu chatbot já está pronto para usá-lo.",
+            buttons: {
+              okAdd: "Adicionar",
+              okEdit: "Salvar",
+              cancel: "Cancelar",
+            },
+          },
         },
       },
       storeAi: {

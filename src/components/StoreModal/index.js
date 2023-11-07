@@ -129,9 +129,7 @@ const StoreModal = ({ open, onClose, storeId, initialValues, onSave }) => {
         scroll="paper"
       >
         <DialogTitle id="form-dialog-title">
-          {storeId
-            ? `${i18n.t("storeModal.title.edit")}`
-            : `${i18n.t("storeModal.title.add")}`}
+          {i18n.t("store.storeModal.title")}
         </DialogTitle>
         <Formik
           initialValues={store}
@@ -150,7 +148,7 @@ const StoreModal = ({ open, onClose, storeId, initialValues, onSave }) => {
                 <div className={classes.textStoreContainer}>
                   <Field
                     as={TextField}
-                    label={i18n.t("storeModal.form.name")}
+                    label={i18n.t("store.storeModal.form.name")}
                     name="name"
                     autoFocus
                     error={touched.name && Boolean(errors.name)}
@@ -164,7 +162,7 @@ const StoreModal = ({ open, onClose, storeId, initialValues, onSave }) => {
                 <div className={classes.textStoreContainer}>
                   <Field
                     as={TextField}
-                    label={i18n.t("storeModal.form.email")}
+                    label={i18n.t("store.storeModal.form.email")}
                     name="email"
                     error={touched.email && Boolean(errors.email)}
                     helperText={touched.email && errors.email}
@@ -177,7 +175,7 @@ const StoreModal = ({ open, onClose, storeId, initialValues, onSave }) => {
                 <div className={classes.textStoreContainer}>
                   <Field
                     as={TextField}
-                    label={i18n.t("storeModal.form.siteUrl")}
+                    label={i18n.t("store.storeModal.form.siteUrl")}
                     name="siteUrl"
                     error={touched.siteUrl && Boolean(errors.siteUrl)}
                     helperText={touched.siteUrl && errors.siteUrl}
@@ -195,7 +193,7 @@ const StoreModal = ({ open, onClose, storeId, initialValues, onSave }) => {
                   disabled={isSubmitting}
                   variant="outlined"
                 >
-                  {i18n.t("storeModal.buttons.cancel")}
+                  {i18n.t("store.storeModal.buttons.cancel")}
                 </Button>
                 <Button
                   type="submit"
@@ -204,9 +202,8 @@ const StoreModal = ({ open, onClose, storeId, initialValues, onSave }) => {
                   variant="contained"
                   className={classes.btnWrapper}
                 >
-                  {storeId
-                    ? `${i18n.t("storeModal.buttons.okEdit")}`
-                    : `${i18n.t("storeModal.buttons.okAdd")}`}
+                  {i18n.t("store.storeModal.buttons.okEdit")}
+
                   {isSubmitting && (
                     <CircularProgress
                       size={24}
