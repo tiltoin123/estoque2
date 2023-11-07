@@ -87,18 +87,23 @@ const useStyles = makeStyles((theme) => ({
     ...theme.scrollbarStyles,
   },
   contactTagsWrapper: {
+    position: "absolute",
+    bottom: 0,
+    right: 0,
     display: "flex",
-    justifyContent: "space-between",
+    flexDirection: "row",
+    flexWrap: "nowrap",
+    overflow: "hidden",
   },
-  teste: {
-    position: "relative",
-    bottom: -8,
+  tags: {
     border: "0.5px solid #CCC",
     background: "#2576D2",
     color: "#FFFFFF",
     padding: 0,
     paddingLeft: 5,
     paddingRight: 5,
+    marginLeft: 5,
+    marginBottom: 5,
     borderRadius: 3,
     fontSize: "0.8em",
     display: "flex",
@@ -328,12 +333,12 @@ const Contacts = () => {
                     <TableCell style={{ paddingRight: 0 }}>
                       {<Avatar src={contact.profilePicUrl} />}
                     </TableCell>
-                    <TableCell>
+                    <TableCell style={{ position: "relative" }}>
                       {contact.name}
                       <div className={classes.contactTagsWrapper}>
                         {/* Map over filtered tags for the current contact */}
                         {contactTags.slice(0, 3).map((tag) => (
-                          <div className={classes.teste} key={tag.id}>
+                          <div className={classes.tags} key={tag.id}>
                             {tag.tagName}
                           </div>
                         ))}

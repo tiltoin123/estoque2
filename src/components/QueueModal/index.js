@@ -77,6 +77,7 @@ const QueueModal = ({ open, onClose, queueId }) => {
   const greetingRef = useRef();
   const [selectedStoreAiId, setSelectedStoreAiId] = useState();
   const initialValues = queue || initialState;
+
   useEffect(() => {
     (async () => {
       if (!queueId) return;

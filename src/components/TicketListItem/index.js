@@ -102,9 +102,9 @@ const useStyles = makeStyles((theme) => ({
     left: "0%",
   },
   userTag: {
-    position: "relative",
-    bottom: -42,
-    right: 200,
+    /* position: "absolute",
+    bottom: 0,
+    right: 0, */
     background: "#2576D2",
     color: "#FFFFFF",
     border: "0.5px solid #CCC",
@@ -114,6 +114,15 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: 3,
     fontSize: "0.8em",
     display: "flex",
+  },
+  contactTagsWrapper: {
+    position: "absolute",
+    bottom: 0,
+    right: 0,
+    display: "flex",
+    flexDirection: "row",
+    flexWrap: "nowrap",
+    overflow: "hidden",
   },
 }));
 
@@ -211,24 +220,26 @@ const TicketListItem = ({ ticket, tags }) => {
                   )}
                 </Typography>
               )}
-              {ticket.whatsappId &&
-                tags
-                  .filter((tag) => tag.contactId === ticket.contactId)
-                  .slice(0, 3)
-                  .map((tag) => (
-                    <div
-                      style={{
-                        backgroundColor: ticket.queue?.color || "#7C7C7C",
-                      }}
-                      key={tag.id}
-                      className={classes.userTag}
-                      title={`${i18n.t("ticketsList.queueTitle")} - ${
-                        tag.tagName
-                      }`}
-                    >
-                      {tag.tagName}
-                    </div>
-                  ))}
+              <div className={classes.contactTagsWrapper}>
+                {ticket.whatsappId &&
+                  tags
+                    .filter((tag) => tag.contactId === ticket.contactId)
+                    .slice(0, 3)
+                    .map((tag) => (
+                      <div
+                        style={{
+                          backgroundColor: ticket.queue?.color || "#7C7C7C",
+                        }}
+                        key={tag.id}
+                        className={classes.userTag}
+                        title={`${i18n.t("ticketsList.queueTitle")} - ${
+                          tag.tagName
+                        }`}
+                      >
+                        {tag.tagName}
+                      </div>
+                    ))}
+              </div>
             </span>
           }
           secondary={

@@ -327,6 +327,7 @@ const messages = {
           users: "Usuários",
           settings: "Configurações",
           storeAi: "Inteligência Artificial",
+          store: "Regras de negócio",
         },
         appBar: {
           user: {
@@ -411,6 +412,21 @@ const messages = {
               disabled: "Desativado",
             },
           },
+        },
+      },
+      store: {
+        success: "Configurações salvas com sucesso.",
+        title: "Regras de Negócio",
+        name: "Nome da empresa",
+        email: "Email",
+        site: "Site da empresa",
+        actions: "ações",
+        pattern: {
+          title: "Padrões",
+          name: "nome do padrão",
+          utility: "utilidade",
+          pattern: "padrão",
+          actions: "ações",
         },
       },
       storeAi: {
