@@ -10,11 +10,6 @@ import {
   Table,
   TableHead,
   Paper,
-  Tooltip,
-  Typography,
-  CircularProgress,
-  Select,
-  TextField,
 } from "@material-ui/core";
 
 import { makeStyles } from "@material-ui/core/styles";
@@ -140,14 +135,15 @@ const Store = () => {
   // const [storePatterns, setStorePatterns] = useState([]);
 
   useEffect(() => {
+    dispatchStore({ type: "RESET" });
+  }, []);
+
+  useEffect(() => {
     const fetchStore = async () => {
       setLoading(true);
       try {
         const { data } = await api.get("/store", {});
         dispatchStore({ type: "LOAD_STORE", payload: data });
-        /* if (data && data.storePatterns) {
-          setStorePatterns(data.storePatterns);
-        } */
         setLoading(false);
       } catch (err) {
         toastError(err);
@@ -186,18 +182,9 @@ const Store = () => {
   useEffect(() => {
     const socket = openSocket();
 
-    socket.on("store", (data) => {
-      if (data.action === "update") {
-        dispatchStore({ type: "UPDATE_STORE", payload: data.store });
-      }
-      /* if (data && data.storePatterns) {
-        setStorePatterns(data.storePatterns);
-      } */
-    });
-
     socket.on("storePatterns", (data) => {
+      console.log(data);
       if (data.action === "update" || data.action === "create") {
-        console.log(data);
         dispatchStorePatterns({
           type: "UPDATE_STOREPATTERNS",
           payload: data.storePattern,
@@ -211,6 +198,13 @@ const Store = () => {
         });
       }
     });
+
+    socket.on("store", (data) => {
+      if (data.action === "update" || data.action === "create") {
+        dispatchStore({ type: "UPDATE_STORE", payload: data.store });
+      }
+    });
+
     return () => {
       socket.disconnect();
     };
@@ -227,8 +221,8 @@ const Store = () => {
   };
 
   const handleOpenStorePatternModal = () => {
+    setStorePatternModalOpen(true);
     setSelectedStorePattern(null);
-    setStorePatternModalOpen(true); //so usa para criar nova store
   };
 
   const handleCloseStorePatternModal = () => {

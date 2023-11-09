@@ -440,6 +440,13 @@ const messages = {
           pattern: "padrão",
           target: "alvo",
           filter: "filtro",
+          label: {
+            startsWith: "começa com",
+            finishesWith: "termina com",
+            contains: "contém",
+            matches: "igual",
+          },
+
           actions: "ações",
           buttons: {
             add: "ADICIONAR PADRÃO",

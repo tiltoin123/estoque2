@@ -16,15 +16,11 @@ import {
 } from "@material-ui/core";
 import { green } from "@material-ui/core/colors";
 import { i18n } from "../../translate/i18n";
-import QueueStoreAiSelect from "../QueueStoreAiSelect";
 import StorePatternQueueSelect from "../StorePatternQueueSelect";
 import StorePatternFilterSelect from "../StorePatternFilterSelect";
 import StorePatternUtilitySelect from "../StorePatternUtilitySelect";
 import api from "../../services/api";
 import toastError from "../../errors/toastError";
-import { Checkbox, ListItemText } from "@material-ui/core";
-import MenuItem from "@material-ui/core/MenuItem";
-import Select from "@material-ui/core/Select";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -68,54 +64,42 @@ const StorePatternModal = ({
   open,
   onClose,
   storePatternsId,
-  initialValues,
+
   onSave,
 }) => {
   const initialState = {
-    name: "",
-    utility: "",
-    target: "",
-    pattern: "",
-    filter: "",
+    name: "aaaaaaaaaaaaa",
+    utility: "aaaaaaaaaaaaa",
+    target: "aaaaaaaaaaaaa", //isso aqui ta muito errado
+    pattern: "aaaaaaaaaaaaa",
+    filter: "aaaaaaaaaaaaa",
   };
   const classes = useStyles();
   const isMounted = useRef(true);
-  const [selectedStoreAiId, setSelectedStoreAiId] = useState();
-  const [selectedQueueId, setSelectedQueueId] = useState();
+  const [selectedQueue, setSelectedQueue] = useState(initialState.target);
   const [storePatterns, setStorePatterns] = useState(initialState);
-  const [selectedStorePatternFilter, setSelectedStorePatternFilter] =
-    useState();
+  const [selectedStorePatternFilter, setSelectedStorePatternFilter] = useState(
+    initialState.filter
+  );
   const [selectStorePatternUtilitySelect, setSelectStorePatternUtilitySelect] =
-    useState();
+    useState(initialState.utility);
+
+  const fetchStorePatterns = async () => {
+    if (!storePatternsId || !open) return;
+
+    try {
+      const { data } = await api.get(`/storePatterns/${storePatternsId}`);
+      if (isMounted.current) {
+        setStorePatterns(data);
+      }
+    } catch (err) {
+      toastError(err);
+    }
+  };
 
   useEffect(() => {
-    return () => {
-      isMounted.current = false;
-    };
-  }, []);
-
-  useEffect(() => {
-    const fetchStorePatterns = async () => {
-      if (initialValues) {
-        setStorePatterns((prevState) => {
-          return { ...prevState, ...initialValues };
-        });
-      }
-
-      if (!storePatternsId) return;
-
-      try {
-        const { data } = await api.get(`/storePatterns/${storePatternsId}`);
-        if (isMounted.current) {
-          setStorePatterns(data);
-        }
-      } catch (err) {
-        toastError(err);
-      }
-    };
-
     fetchStorePatterns();
-  }, [storePatternsId, open, initialValues]);
+  }, [storePatternsId, open]);
 
   const handleClose = () => {
     onClose();
@@ -123,11 +107,21 @@ const StorePatternModal = ({
   };
 
   const handleSaveStorePattern = async (values) => {
+    values.utility = selectStorePatternUtilitySelect;
+    values.filter = selectedStorePatternFilter;
+    values.target = selectedQueue;
+    console.log("values", values);
+    const storePatternData = { ...values };
     try {
-      if (storePatternsId) {
-        await api.put(`/storePatterns/${storePatternsId}`, values);
+      console.log("store pattern data", storePatternData);
+      if (!storePatternsId) {
+        console.log("tentou criar Storepattern");
+        const { data } = await api.post("/storePatterns", storePatternData);
+        if (onSave) {
+          onSave(data);
+        }
       } else {
-        await api.post("/storePatterns", values);
+        await api.put(`/storePatterns/${storePatternsId}`, storePatternData);
       }
       handleClose();
       toast.success(i18n.t("store.pattern.patternModal.success"));
@@ -179,7 +173,7 @@ const StorePatternModal = ({
                   />
                 </div>
                 <StorePatternUtilitySelect
-                  selectedStorePatternFilter={selectStorePatternUtilitySelect}
+                  StorePatternUtilitySelect={selectStorePatternUtilitySelect}
                   onChange={(value) =>
                     setSelectStorePatternUtilitySelect(value)
                   }
@@ -206,9 +200,9 @@ const StorePatternModal = ({
                 </div>
                 <div style={{ display: "flex" }}>
                   <StorePatternQueueSelect
-                    selectedQueueId={selectedQueueId}
+                    selectedQueue={selectedQueue}
                     //storeAi={storeAi}
-                    onChange={(value) => setSelectedQueueId(value)}
+                    onChange={(value) => setSelectedQueue(value)}
                   />
                 </div>
               </DialogContent>

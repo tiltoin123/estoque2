@@ -45,7 +45,7 @@ const QueueStoreAiSelect = ({ selectedStoreAiId, onChange }) => {
     return () => clearTimeout(delayDebounceFn);
   }, []);
 
-  const storeAi = state.storeAi; // Extract storeAi from the state
+  const storeAi = state.storeAi;
 
   return (
     <div style={{ width: 230, marginTop: -4 }}>

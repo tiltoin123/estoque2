@@ -20,7 +20,7 @@ const reducer = (state, action) => {
   }
 };
 
-const StorePatternQueueSelect = ({ selectedQueueId, onChange }) => {
+const StorePatternQueueSelect = ({ selectedQueue, onChange }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const [loading, setLoading] = useState(false);
 
@@ -34,7 +34,6 @@ const StorePatternQueueSelect = ({ selectedQueueId, onChange }) => {
       const fetchQueues = async () => {
         try {
           const { data } = await api.get("/queue", {});
-          console.log("queueselectpatternFE", data);
           dispatch({ type: "LOAD_QUEUES", payload: data });
           setLoading(false);
         } catch (err) {
@@ -46,15 +45,14 @@ const StorePatternQueueSelect = ({ selectedQueueId, onChange }) => {
     return () => clearTimeout(delayDebounceFn);
   }, []);
 
-  const queues = state.queues; // Extract storeAi from the state
-
+  const queues = state.queues;
   return (
     <div style={{ width: 230, marginTop: -4 }}>
       <FormControl fullWidth margin="dense">
         <Select
           displayEmpty
           variant="outlined"
-          value={selectedQueueId}
+          value={selectedQueue}
           onChange={handleChange}
           MenuProps={{
             anchorOrigin: {
@@ -75,7 +73,7 @@ const StorePatternQueueSelect = ({ selectedQueueId, onChange }) => {
           </MenuItem>
           {queues?.length > 0 &&
             queues.map((queue) => (
-              <MenuItem dense key={queue.id} value={queue.id}>
+              <MenuItem dense key={queue.id} value={queue.name}>
                 <Checkbox size="small" color="primary" />
                 <ListItemText primary={queue.name} />
               </MenuItem>
