@@ -29,7 +29,14 @@ const StorePatternUtilitySelect = ({ StorePatternUtilitySelect, onChange }) => {
             },
             getContentAnchorEl: null,
           }}
-          renderValue={() => i18n.t("store.pattern.patternModal.form.utility")}
+          renderValue={() =>
+            StorePatternUtilitySelect &&
+            StorePatternUtilitySelect != "[##N/A##]"
+              ? i18n.t(
+                  `store.pattern.patternModal.form.utility.${StorePatternUtilitySelect}`
+                )
+              : i18n.t("store.pattern.patternModal.form.utility.placeholder")
+          }
         >
           <MenuItem dense value={null}>
             <Checkbox size="small" color="primary" />
@@ -37,7 +44,7 @@ const StorePatternUtilitySelect = ({ StorePatternUtilitySelect, onChange }) => {
           </MenuItem>
           <MenuItem dense value={"updateTicketQueue"}>
             <Checkbox size="small" color="primary" />
-            <ListItemText primary={"mover para fila"} />
+            <ListItemText primary={"Mover para fila"} />
           </MenuItem>
           <MenuItem dense value={"verifyContactFullName"}>
             <Checkbox size="small" color="primary" />

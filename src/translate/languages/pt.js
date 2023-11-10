@@ -458,8 +458,18 @@ const messages = {
             },
             form: {
               name: "Nome do padrão",
-              utility: "Função do padrão",
-              filter: "Tipo de filtro",
+              utility: {
+                placeholder: "Função do padrão",
+                updateTicketQueue: "Mudar fila do ticket",
+                verifyContactFullName: "Editar nome completo",
+              },
+              filter: {
+                placeholder: "Tipo de filtro",
+                startsWith: "inicia com",
+                finishesWith: "termina com",
+                contains: "contém",
+                exactMatch: "correspondência exata",
+              },
               pattern: "Padrão",
               target: "Alvo",
             },

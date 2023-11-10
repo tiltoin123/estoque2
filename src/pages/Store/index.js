@@ -183,7 +183,6 @@ const Store = () => {
     const socket = openSocket();
 
     socket.on("storePatterns", (data) => {
-      console.log(data);
       if (data.action === "update" || data.action === "create") {
         dispatchStorePatterns({
           type: "UPDATE_STOREPATTERNS",
@@ -191,7 +190,6 @@ const Store = () => {
         });
       }
       if (data.action === "delete") {
-        console.log(data);
         dispatchStorePatterns({
           type: "DELETE_STOREPATTERNS",
           payload: +data.storePatternId,
@@ -241,9 +239,7 @@ const Store = () => {
   };
 
   const handleDeleteStorePattern = async (storePatternsId) => {
-    console.log(storePatternsId);
     try {
-      console.log(selectedStorePattern);
       await api.delete(`/storePatterns/${storePatternsId}`);
       toast.success(i18n.t("Store Pattern deleted successfully!"));
     } catch (err) {

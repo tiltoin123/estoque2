@@ -20,7 +20,7 @@ const reducer = (state, action) => {
   }
 };
 
-const StorePatternQueueSelect = ({ selectedQueue, onChange }) => {
+const StorePatternQueueSelect = ({ selectedQueue, onChange, disabled }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const [loading, setLoading] = useState(false);
 
@@ -47,10 +47,11 @@ const StorePatternQueueSelect = ({ selectedQueue, onChange }) => {
 
   const queues = state.queues;
   return (
-    <div style={{ width: 230, marginTop: -4 }}>
+    <div style={{ width: 230, marginTop: 0 }}>
       <FormControl fullWidth margin="dense">
         <Select
           displayEmpty
+          disabled={disabled}
           variant="outlined"
           value={selectedQueue}
           onChange={handleChange}
@@ -65,7 +66,11 @@ const StorePatternQueueSelect = ({ selectedQueue, onChange }) => {
             },
             getContentAnchorEl: null,
           }}
-          renderValue={() => i18n.t("store.pattern.patternModal.form.target")}
+          renderValue={() =>
+            selectedQueue && selectedQueue != "[##N/A##]"
+              ? selectedQueue
+              : i18n.t("store.pattern.patternModal.form.target")
+          }
         >
           <MenuItem dense value={null}>
             <Checkbox size="small" color="primary" />

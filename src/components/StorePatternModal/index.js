@@ -68,11 +68,11 @@ const StorePatternModal = ({
   onSave,
 }) => {
   const initialState = {
-    name: "aaaaaaaaaaaaa",
-    utility: "aaaaaaaaaaaaa",
-    target: "aaaaaaaaaaaaa", //isso aqui ta muito errado
-    pattern: "aaaaaaaaaaaaa",
-    filter: "aaaaaaaaaaaaa",
+    name: "",
+    utility: "[##N/A##]",
+    target: "[##N/A##]", //isso aqui ta muito errado
+    pattern: "",
+    filter: "[##N/A##]",
   };
   const classes = useStyles();
   const isMounted = useRef(true);
@@ -83,7 +83,8 @@ const StorePatternModal = ({
   );
   const [selectStorePatternUtilitySelect, setSelectStorePatternUtilitySelect] =
     useState(initialState.utility);
-
+  const disableFormField =
+    selectStorePatternUtilitySelect === "updateTicketQueue" ? false : true;
   const fetchStorePatterns = async () => {
     if (!storePatternsId || !open) return;
 
@@ -110,7 +111,6 @@ const StorePatternModal = ({
     values.utility = selectStorePatternUtilitySelect;
     values.filter = selectedStorePatternFilter;
     values.target = selectedQueue;
-    console.log("values", values);
     const storePatternData = { ...values };
     try {
       console.log("store pattern data", storePatternData);
@@ -172,12 +172,19 @@ const StorePatternModal = ({
                     fullWidth
                   />
                 </div>
-                <StorePatternUtilitySelect
-                  StorePatternUtilitySelect={selectStorePatternUtilitySelect}
-                  onChange={(value) =>
-                    setSelectStorePatternUtilitySelect(value)
-                  }
-                />
+                <div style={{ display: "flex" }}>
+                  <StorePatternUtilitySelect
+                    StorePatternUtilitySelect={selectStorePatternUtilitySelect}
+                    onChange={(value) =>
+                      setSelectStorePatternUtilitySelect(value)
+                    }
+                  />
+                  <StorePatternQueueSelect
+                    selectedQueue={selectedQueue}
+                    disabled={disableFormField}
+                    onChange={(value) => setSelectedQueue(value)}
+                  />
+                </div>
                 <div
                   className={classes.textStoreContainer}
                   style={{ display: "flex" }}
@@ -196,13 +203,6 @@ const StorePatternModal = ({
                     margin="dense"
                     className={classes.textField}
                     fullWidth
-                  />
-                </div>
-                <div style={{ display: "flex" }}>
-                  <StorePatternQueueSelect
-                    selectedQueue={selectedQueue}
-                    //storeAi={storeAi}
-                    onChange={(value) => setSelectedQueue(value)}
                   />
                 </div>
               </DialogContent>

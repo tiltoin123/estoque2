@@ -29,17 +29,24 @@ const StorePatternFilterSelect = ({ selectedStorePatternFilter, onChange }) => {
             },
             getContentAnchorEl: null,
           }}
-          renderValue={() => i18n.t("store.pattern.patternModal.form.filter")}
+          renderValue={() =>
+            selectedStorePatternFilter &&
+            selectedStorePatternFilter != "[##N/A##]"
+              ? i18n.t(
+                  `store.pattern.patternModal.form.filter.${selectedStorePatternFilter}`
+                )
+              : i18n.t("store.pattern.patternModal.form.filter.placeholder")
+          }
         >
           <MenuItem dense value={null}>
             <Checkbox size="small" color="primary" />
             <ListItemText primary={""} />
           </MenuItem>
-          <MenuItem dense value={"starts with"}>
+          <MenuItem dense value={"startsWith"}>
             <Checkbox size="small" color="primary" />
             <ListItemText primary={"inicia com"} />
           </MenuItem>
-          <MenuItem dense value={"finishes with"}>
+          <MenuItem dense value={"finishesWith"}>
             <Checkbox size="small" color="primary" />
             <ListItemText primary={"termina com"} />
           </MenuItem>
@@ -47,7 +54,7 @@ const StorePatternFilterSelect = ({ selectedStorePatternFilter, onChange }) => {
             <Checkbox size="small" color="primary" />
             <ListItemText primary={"contém"} />
           </MenuItem>
-          <MenuItem dense value={"exact match"}>
+          <MenuItem dense value={"exactMatch"}>
             <Checkbox size="small" color="primary" />
             <ListItemText primary={"correspondência exata"} />
           </MenuItem>
