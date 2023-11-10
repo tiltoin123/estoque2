@@ -31,7 +31,7 @@ const StorePatternFilterSelect = ({ selectedStorePatternFilter, onChange }) => {
           }}
           renderValue={() =>
             selectedStorePatternFilter &&
-            selectedStorePatternFilter != "[##N/A##]"
+            selectedStorePatternFilter !== "[##N/A##]"
               ? i18n.t(
                   `store.pattern.patternModal.form.filter.${selectedStorePatternFilter}`
                 )

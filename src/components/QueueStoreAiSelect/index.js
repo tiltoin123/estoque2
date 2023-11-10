@@ -51,6 +51,7 @@ const QueueStoreAiSelect = ({ selectedStoreAiId, onChange }) => {
     <div style={{ width: 230, marginTop: -4 }}>
       <FormControl fullWidth margin="dense">
         <Select
+          displayEmpty
           variant="outlined"
           value={selectedStoreAiId}
           onChange={handleChange}
@@ -65,7 +66,14 @@ const QueueStoreAiSelect = ({ selectedStoreAiId, onChange }) => {
             },
             getContentAnchorEl: null,
           }}
-          renderValue={() => i18n.t("queueStoreAiSelect.placeholder")}
+          renderValue={() => {
+            const selectedStoreAi = storeAi.find(
+              (ai) => ai.id === selectedStoreAiId
+            );
+            return selectedStoreAi
+              ? selectedStoreAi.name
+              : i18n.t("queueStoreAiSelect.placeholder");
+          }}
         >
           <MenuItem dense value={null}>
             <Checkbox size="small" color="primary" />
