@@ -192,7 +192,7 @@ const Store = () => {
       if (data.action === "delete") {
         dispatchStorePatterns({
           type: "DELETE_STOREPATTERNS",
-          payload: +data.storePatternId,
+          payload: +data.storePatternsId,
         });
       }
     });

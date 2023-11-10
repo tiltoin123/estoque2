@@ -53,7 +53,7 @@ const StorePatternQueueSelect = ({ selectedQueue, onChange, disabled }) => {
           displayEmpty
           disabled={disabled}
           variant="outlined"
-          value={selectedQueue}
+          value={!disabled ? selectedQueue : "[##N/A##]"}
           onChange={handleChange}
           MenuProps={{
             anchorOrigin: {

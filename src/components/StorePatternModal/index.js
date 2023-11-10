@@ -113,9 +113,7 @@ const StorePatternModal = ({
     values.target = selectedQueue;
     const storePatternData = { ...values };
     try {
-      console.log("store pattern data", storePatternData);
       if (!storePatternsId) {
-        console.log("tentou criar Storepattern");
         const { data } = await api.post("/storePatterns", storePatternData);
         if (onSave) {
           onSave(data);
