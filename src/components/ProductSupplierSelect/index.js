@@ -2,25 +2,36 @@ import React, { useEffect, useReducer, useState } from "react";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
-import { Checkbox, ListItemText } from "@material-ui/core";
+import { Checkbox, ListItemText, InputLabel } from "@material-ui/core";
 import { i18n } from "../../translate/i18n";
 import toastError from "../../errors/toastError";
 import api from "../../services/api";
+import { makeStyles } from "@material-ui/core/styles";
+const useStyles = makeStyles(() => ({
+  btnWrapper: {
+    position: "relative",
+  },
+  formControl: {
+    minWidth: 120,
+    minHeight: 80,
+  },
+}));
 
 const initialState = {
-  queues: [],
+  suppliers: [],
 };
 
 const reducer = (state, action) => {
   switch (action.type) {
-    case "LOAD_QUEUES":
-      return { ...state, queues: action.payload };
+    case "LOAD_SUPPLIERS":
+      return { ...state, suppliers: action.payload };
     default:
       return state;
   }
 };
 
-const StorePatternQueueSelect = ({ selectedQueue, onChange, disabled }) => {
+const ProductSupplierSelect = ({ selectedSupplier, onChange }) => {
+  const classes = useStyles();
   const [state, dispatch] = useReducer(reducer, initialState);
   const [loading, setLoading] = useState(false);
 
@@ -31,29 +42,37 @@ const StorePatternQueueSelect = ({ selectedQueue, onChange, disabled }) => {
   useEffect(() => {
     setLoading(true);
     const delayDebounceFn = setTimeout(() => {
-      const fetchQueues = async () => {
+      const fetchSuppliers = async () => {
         try {
-          const { data } = await api.get("/queue", {});
-          dispatch({ type: "LOAD_QUEUES", payload: data });
+          const { data } = await api.get("/suppliers", {});
+          dispatch({ type: "LOAD_SUPPLIERS", payload: data });
           setLoading(false);
         } catch (err) {
           toastError(err);
         }
       };
-      fetchQueues();
+      fetchSuppliers();
     }, 500);
     return () => clearTimeout(delayDebounceFn);
   }, []);
 
-  const queues = state.queues;
+  const { suppliers } = state.suppliers;
   return (
-    <div style={{ width: 230, marginTop: 0 }}>
-      <FormControl fullWidth margin="dense">
+    <div
+      style={{ width: 300, marginTop: 0, marginLeft: -8 }}
+      className={classes.multFieldLine}
+    >
+      <FormControl fullWidth margin="dense" className={classes.formControl}>
+        {/* <InputLabel
+          id="profile-selection-input-label"
+          style={{ marginBottom: "80px" }}
+        >
+          {i18n.t("productModal.form.unity")}
+        </InputLabel> */}
         <Select
           displayEmpty
-          disabled={disabled}
           variant="outlined"
-          value={!disabled ? selectedQueue : "[##N/A##]"}
+          value={selectedSupplier ? selectedSupplier : ""}
           onChange={handleChange}
           MenuProps={{
             anchorOrigin: {
@@ -67,20 +86,20 @@ const StorePatternQueueSelect = ({ selectedQueue, onChange, disabled }) => {
             getContentAnchorEl: null,
           }}
           renderValue={() =>
-            selectedQueue && selectedQueue != "[##N/A##]"
-              ? selectedQueue
-              : i18n.t("store.pattern.patternModal.form.target")
+            selectedSupplier && selectedSupplier != ""
+              ? selectedSupplier
+              : i18n.t("productModal.form.supplier")
           }
         >
           <MenuItem dense value={null}>
             <Checkbox size="small" color="primary" />
             <ListItemText primary={""} />
           </MenuItem>
-          {queues?.length > 0 &&
-            queues.map((queue) => (
-              <MenuItem dense key={queue.id} value={queue.name}>
+          {suppliers?.length > 0 &&
+            suppliers.map((supplier) => (
+              <MenuItem dense key={supplier.id} value={supplier.id}>
                 <Checkbox size="small" color="primary" />
-                <ListItemText primary={queue.name} />
+                <ListItemText primary={supplier.nomeFantasia} />
               </MenuItem>
             ))}
         </Select>
@@ -89,4 +108,4 @@ const StorePatternQueueSelect = ({ selectedQueue, onChange, disabled }) => {
   );
 };
 
-export default StorePatternQueueSelect;
+export default ProductSupplierSelect;

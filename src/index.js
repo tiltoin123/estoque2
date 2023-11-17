@@ -5,10 +5,10 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import App from "./App";
 
 ReactDOM.render(
-  <CssBaseline>
-    <App />
-  </CssBaseline>,
-  document.getElementById("root")
+	<CssBaseline>
+		<App />
+	</CssBaseline>,
+	document.getElementById("root")
 );
 
 // ReactDOM.render(
@@ -20,10 +20,3 @@ ReactDOM.render(
 
 // 	document.getElementById("root")
 // );
-
-/* const root = ReactDOM.createRoot(document.getElementById("root"));
-root.render(
-  <CssBaseline>
-    <App />
-  </CssBaseline>
-); */

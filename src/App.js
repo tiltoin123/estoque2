@@ -2,13 +2,13 @@ import React, { useState, useEffect } from "react";
 import Routes from "./routes";
 import "react-toastify/dist/ReactToastify.css";
 
-import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
+import { createTheme, ThemeProvider } from "@material-ui/core/styles";
 import { ptBR } from "@material-ui/core/locale";
 
 const App = () => {
   const [locale, setLocale] = useState();
 
-  const theme = createMuiTheme(
+  const theme = createTheme(
     {
       scrollbarStyles: {
         "&::-webkit-scrollbar": {

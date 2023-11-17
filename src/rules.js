@@ -4,15 +4,7 @@ const rules = {
   },
 
   admin: {
-    static: [
-      "drawer-admin-items:view",
-      "tickets-manager:showall",
-      "user-modal:editProfile",
-      "user-modal:editQueues",
-      "ticket-options:deleteTicket",
-      "ticket-options:transferWhatsapp",
-      "contacts-page:deleteContact",
-    ],
+    static: ["drawer-admin-items:view", "user-modal:editProfile"],
   },
 };
 

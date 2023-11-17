@@ -3,22 +3,15 @@ import { BrowserRouter, Switch } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 
 import LoggedInLayout from "../layout";
-import Dashboard from "../pages/Dashboard/";
-import Tickets from "../pages/Tickets/";
+
 import Signup from "../pages/Signup/";
 import Login from "../pages/Login/";
 import Verify from "../pages/Verify";
-import Connections from "../pages/Connections/";
-import Settings from "../pages/Settings/";
 import Users from "../pages/Users";
-import Contacts from "../pages/Contacts/";
-import QuickAnswers from "../pages/QuickAnswers/";
-import Queues from "../pages/Queues/";
 import { AuthProvider } from "../context/Auth/AuthContext";
-import { WhatsAppsProvider } from "../context/WhatsApp/WhatsAppsContext";
 import Route from "./Route";
-import StoreAi from "../pages/StoreAi";
-import Store from "../pages/Store";
+import Suppliers from "../pages/Suppliers";
+import Products from "../pages/Products";
 
 const Routes = () => {
   return (
@@ -28,35 +21,11 @@ const Routes = () => {
           <Route exact path="/login" component={Login} />
           <Route exact path="/signup" component={Signup} />
           <Route exact path="/verify/:confirmationToken?" component={Verify} />
-          <WhatsAppsProvider>
-            <LoggedInLayout>
-              <Route exact path="/" component={Dashboard} isPrivate />
-              <Route
-                exact
-                path="/tickets/:ticketId?"
-                component={Tickets}
-                isPrivate
-              />
-              <Route
-                exact
-                path="/connections"
-                component={Connections}
-                isPrivate
-              />
-              <Route exact path="/contacts" component={Contacts} isPrivate />
-              <Route exact path="/users" component={Users} isPrivate />
-              <Route
-                exact
-                path="/quickAnswers"
-                component={QuickAnswers}
-                isPrivate
-              />
-              <Route exact path="/storeai" component={StoreAi} isPrivate />
-              <Route exact path="/Settings" component={Settings} isPrivate />
-              <Route exact path="/Queues" component={Queues} isPrivate />
-              <Route exact path="/store" component={Store} isPrivate />
-            </LoggedInLayout>
-          </WhatsAppsProvider>
+          <LoggedInLayout>
+            <Route exact path="/products" component={Products} isPrivate />
+            <Route exact path="/users" component={Users} isPrivate />
+            <Route exact path="/suppliers" component={Suppliers} isPrivate />
+          </LoggedInLayout>
         </Switch>
         <ToastContainer autoClose={3000} />
       </AuthProvider>

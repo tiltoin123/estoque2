@@ -26,45 +26,45 @@ import Title from "../../components/Title";
 import api from "../../services/api";
 import { i18n } from "../../translate/i18n";
 import TableRowSkeleton from "../../components/TableRowSkeleton";
-import UserModal from "../../components/UserModal";
+import SupplierModal from "../../components/SupplierModal";
 import ConfirmationModal from "../../components/ConfirmationModal";
 import toastError from "../../errors/toastError";
 
 const reducer = (state, action) => {
-  if (action.type === "LOAD_USERS") {
-    const users = action.payload;
-    const newUsers = [];
+  if (action.type === "LOAD_SUPPLIERS") {
+    const suppliers = action.payload;
+    const newSuppliers = [];
 
-    users.forEach((user) => {
-      const userIndex = state.findIndex((u) => u.id === user.id);
-      if (userIndex !== -1) {
-        state[userIndex] = user;
+    suppliers.forEach((supplier) => {
+      const supplierIndex = state.findIndex((s) => s.id === supplier.id);
+      if (supplierIndex !== -1) {
+        state[supplierIndex] = supplier;
       } else {
-        newUsers.push(user);
+        newSuppliers.push(supplier);
       }
     });
 
-    return [...state, ...newUsers];
+    return [...state, ...newSuppliers];
   }
 
-  if (action.type === "UPDATE_USERS") {
-    const user = action.payload;
-    const userIndex = state.findIndex((u) => u.id === user.id);
-
-    if (userIndex !== -1) {
-      state[userIndex] = user;
+  if (action.type === "UPDATE_SUPPLIERS") {
+    console.log("aç~~ update", action);
+    const supplier = action.payload;
+    const supplierIndex = state.findIndex((s) => s.id === supplier.id);
+    if (supplierIndex !== -1) {
+      state[supplierIndex] = supplier;
       return [...state];
     } else {
-      return [user, ...state];
+      return [supplier, ...state];
     }
   }
 
-  if (action.type === "DELETE_USER") {
-    const userId = action.payload;
+  if (action.type === "DELETE_SUPPLIER") {
+    const supplierId = action.payload;
 
-    const userIndex = state.findIndex((u) => u.id === userId);
-    if (userIndex !== -1) {
-      state.splice(userIndex, 1);
+    const supplierIndex = state.findIndex((s) => s.id === supplierId);
+    if (supplierIndex !== -1) {
+      state.splice(supplierIndex, 1);
     }
     return [...state];
   }
@@ -83,18 +83,18 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Users = () => {
+const Suppliers = () => {
   const classes = useStyles();
 
   const [loading, setLoading] = useState(false);
   const [pageNumber, setPageNumber] = useState(1);
   const [hasMore, setHasMore] = useState(false);
-  const [selectedUser, setSelectedUser] = useState(null);
-  const [deletingUser, setDeletingUser] = useState(null);
-  const [userModalOpen, setUserModalOpen] = useState(false);
+  const [selectedSupplier, setSelectedSupplier] = useState(null);
+  const [deletingSupplier, setDeletingSupplier] = useState(null);
+  const [supplierModalOpen, setSupplierModalOpen] = useState(false);
   const [confirmModalOpen, setConfirmModalOpen] = useState(false);
   const [searchParam, setSearchParam] = useState("");
-  const [users, dispatch] = useReducer(reducer, []);
+  const [suppliers, dispatch] = useReducer(reducer, []);
 
   useEffect(() => {
     dispatch({ type: "RESET" });
@@ -104,19 +104,19 @@ const Users = () => {
   useEffect(() => {
     setLoading(true);
     const delayDebounceFn = setTimeout(() => {
-      const fetchUsers = async () => {
+      const fetchSuppliers = async () => {
         try {
-          const { data } = await api.get("/users/", {
+          const { data } = await api.get("/suppliers/", {
             params: { searchParam, pageNumber },
           });
-          dispatch({ type: "LOAD_USERS", payload: data.users });
+          dispatch({ type: "LOAD_SUPPLIERS", payload: data.suppliers });
           setHasMore(data.hasMore);
           setLoading(false);
         } catch (err) {
           toastError(err);
         }
       };
-      fetchUsers();
+      fetchSuppliers();
     }, 500);
     return () => clearTimeout(delayDebounceFn);
   }, [searchParam, pageNumber]);
@@ -124,13 +124,13 @@ const Users = () => {
   useEffect(() => {
     const socket = openSocket();
 
-    socket.on("user", (data) => {
+    socket.on("supplier", (data) => {
       if (data.action === "update" || data.action === "create") {
-        dispatch({ type: "UPDATE_USERS", payload: data.user });
+        dispatch({ type: "UPDATE_SUPPLIERS", payload: data.supplier });
       }
 
       if (data.action === "delete") {
-        dispatch({ type: "DELETE_USER", payload: +data.userId });
+        dispatch({ type: "DELETE_SUPPLIER", payload: +data.supplierId });
       }
     });
 
@@ -139,33 +139,34 @@ const Users = () => {
     };
   }, []);
 
-  const handleOpenUserModal = () => {
-    setSelectedUser(null);
-    setUserModalOpen(true);
+  const handleOpenSupplierModal = () => {
+    setSelectedSupplier(null);
+    setSupplierModalOpen(true);
   };
 
-  const handleCloseUserModal = () => {
-    setSelectedUser(null);
-    setUserModalOpen(false);
+  const handleCloseSupplierModal = () => {
+    setSelectedSupplier(null);
+    setSupplierModalOpen(false);
   };
 
   const handleSearch = (event) => {
     setSearchParam(event.target.value.toLowerCase());
   };
 
-  const handleEditUser = (user) => {
-    setSelectedUser(user);
-    setUserModalOpen(true);
+  const handleEditSupplier = (supplier) => {
+    console.log("handle edit ", supplier);
+    setSelectedSupplier(supplier);
+    setSupplierModalOpen(true);
   };
 
-  const handleDeleteUser = async (userId) => {
+  const handleDeleteSupplier = async (supplierId) => {
     try {
-      await api.delete(`/users/${userId}`);
-      toast.success(i18n.t("users.toasts.deleted"));
+      await api.delete(`/suppliers/${supplierId}`);
+      toast.success(i18n.t("supplierId.toasts.deleted"));
     } catch (err) {
       toastError(err);
     }
-    setDeletingUser(null);
+    setDeletingSupplier(null);
     setSearchParam("");
     setPageNumber(1);
   };
@@ -186,25 +187,25 @@ const Users = () => {
     <MainContainer>
       <ConfirmationModal
         title={
-          deletingUser &&
-          `${i18n.t("users.confirmationModal.deleteTitle")} ${
-            deletingUser.name
+          deletingSupplier &&
+          `${i18n.t("suppliers.confirmationModal.deleteTitle")} ${
+            deletingSupplier.nomeFantasia
           }?`
         }
         open={confirmModalOpen}
         onClose={setConfirmModalOpen}
-        onConfirm={() => handleDeleteUser(deletingUser.id)}
+        onConfirm={() => handleDeleteSupplier(deletingSupplier.id)}
       >
-        {i18n.t("users.confirmationModal.deleteMessage")}
+        {i18n.t("suppliers.confirmationModal.deleteMessage")}
       </ConfirmationModal>
-      <UserModal
-        open={userModalOpen}
-        onClose={handleCloseUserModal}
+      <SupplierModal
+        open={supplierModalOpen}
+        onClose={handleCloseSupplierModal}
         aria-labelledby="form-dialog-title"
-        userId={selectedUser && selectedUser.id}
+        supplierId={selectedSupplier && selectedSupplier.id}
       />
       <MainHeader>
-        <Title>{i18n.t("users.title")}</Title>
+        <Title>{i18n.t("suppliers.title")}</Title>
         <MainHeaderButtonsWrapper>
           <TextField
             placeholder={i18n.t("contacts.searchPlaceholder")}
@@ -222,9 +223,9 @@ const Users = () => {
           <Button
             variant="contained"
             color="primary"
-            onClick={handleOpenUserModal}
+            onClick={handleOpenSupplierModal}
           >
-            {i18n.t("users.buttons.add")}
+            {i18n.t("suppliers.buttons.add")}
           </Button>
         </MainHeaderButtonsWrapper>
       </MainHeader>
@@ -232,33 +233,52 @@ const Users = () => {
         className={classes.mainPaper}
         variant="outlined"
         onScroll={handleScroll}
+        style={{ overflowX: "auto" }}
       >
         <Table size="small">
           <TableHead>
             <TableRow>
-              <TableCell align="center">{i18n.t("users.table.name")}</TableCell>
               <TableCell align="center">
-                {i18n.t("users.table.email")}
+                {i18n.t("suppliers.table.razaoSocial")}
               </TableCell>
               <TableCell align="center">
-                {i18n.t("users.table.profile")}
+                {i18n.t("suppliers.table.nomeFantasia")}
               </TableCell>
               <TableCell align="center">
-                {i18n.t("users.table.actions")}
+                {i18n.t("suppliers.table.tipoJur")}
+              </TableCell>
+              <TableCell align="center">
+                {i18n.t("suppliers.table.telefone")}
+              </TableCell>
+              <TableCell align="center">
+                {i18n.t("suppliers.table.email")}
+              </TableCell>
+              <TableCell align="center">
+                {i18n.t("suppliers.table.endereco")}
+              </TableCell>
+              <TableCell align="center">
+                {i18n.t("suppliers.table.cnpj")}
+              </TableCell>
+              <TableCell align="center">
+                {i18n.t("suppliers.table.actions")}
               </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             <>
-              {users.map((user) => (
-                <TableRow key={user.id}>
-                  <TableCell align="center">{user.name}</TableCell>
-                  <TableCell align="center">{user.email}</TableCell>
-                  <TableCell align="center">{user.profile}</TableCell>
+              {suppliers.map((supplier) => (
+                <TableRow key={supplier.id}>
+                  <TableCell align="center">{supplier.razaoSocial}</TableCell>
+                  <TableCell align="center">{supplier.nomeFantasia}</TableCell>
+                  <TableCell align="center">{supplier.tipoJur}</TableCell>
+                  <TableCell align="center">{supplier.telefone}</TableCell>
+                  <TableCell align="center">{supplier.email}</TableCell>
+                  <TableCell align="center">{supplier.endereco}</TableCell>
+                  <TableCell align="center">{supplier.cnpj}</TableCell>
                   <TableCell align="center">
                     <IconButton
                       size="small"
-                      onClick={() => handleEditUser(user)}
+                      onClick={() => handleEditSupplier(supplier)}
                     >
                       <EditIcon />
                     </IconButton>
@@ -267,7 +287,7 @@ const Users = () => {
                       size="small"
                       onClick={(e) => {
                         setConfirmModalOpen(true);
-                        setDeletingUser(user);
+                        setDeletingSupplier(supplier);
                       }}
                     >
                       <DeleteOutlineIcon />
@@ -275,7 +295,7 @@ const Users = () => {
                   </TableCell>
                 </TableRow>
               ))}
-              {loading && <TableRowSkeleton columns={4} />}
+              {loading && <TableRowSkeleton columns={7} />}
             </>
           </TableBody>
         </Table>
@@ -284,4 +304,4 @@ const Users = () => {
   );
 };
 
-export default Users;
+export default Suppliers;

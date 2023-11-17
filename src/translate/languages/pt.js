@@ -230,6 +230,28 @@ const messages = {
         },
         success: "Inteligência artificial salva com sucesso.",
       },
+      supplierModal: {
+        title: {
+          add: "Adicionar fornecedor",
+          edit: "Editar fornecedor",
+        },
+        form: {
+          razaoSocial: "Razão social",
+          email: "Email",
+          nomeFantasia: "Nome fantasia",
+          telefone: "Telefone",
+          tipoJur: "Tipo jurídico",
+          endereco: "Endereço",
+          cnpj: "Cnpj",
+          actions: "Ações",
+        },
+        buttons: {
+          okAdd: "Adicionar",
+          okEdit: "Salvar",
+          cancel: "Cancelar",
+        },
+        success: "fornecedor salvo com sucesso.",
+      },
       userModal: {
         title: {
           add: "Adicionar usuário",
@@ -248,6 +270,26 @@ const messages = {
           cancel: "Cancelar",
         },
         success: "Usuário salvo com sucesso.",
+      },
+      productModal: {
+        title: {
+          add: "Adicionar produto",
+          edit: "Editar produto",
+        },
+        form: {
+          name: "Nome",
+          quantity: "Quantidade",
+          unity: "Unidade",
+          price: "Preço",
+          whatsapp: "Conexão Padrão",
+          supplier: "Fornecedor",
+        },
+        buttons: {
+          okAdd: "Adicionar",
+          okEdit: "Salvar",
+          cancel: "Cancelar",
+        },
+        success: "Produto salvo com sucesso.",
       },
       chat: {
         noTicketMessage: "Selecione um ticket para começar a conversar.",
@@ -318,8 +360,8 @@ const messages = {
       mainDrawer: {
         listItems: {
           dashboard: "Dashboard",
-          connections: "Conexões",
-          tickets: "Tickets",
+          suppliers: "Fornecedores",
+          products: "Produtos",
           contacts: "Contatos",
           quickAnswers: "Respostas Rápidas",
           queues: "Filas",
@@ -327,7 +369,6 @@ const messages = {
           users: "Usuários",
           settings: "Configurações",
           storeAi: "Inteligência Artificial",
-          store: "Regras de negócio",
         },
         appBar: {
           user: {
@@ -338,6 +379,29 @@ const messages = {
       },
       notifications: {
         noTickets: "Nenhuma notificação.",
+      },
+      products: {
+        title: "Produtos",
+        table: {
+          name: "Nome",
+          price: "Preço",
+          supplier: "Fornecedor",
+          description: "Descrição",
+          unity: "Unidade",
+          quantity: "Quantidade",
+          actions: "Ações",
+        },
+        buttons: {
+          add: "Adicionar produto",
+        },
+        toasts: {
+          deleted: "Produto excluído com sucesso.",
+        },
+        confirmationModal: {
+          deleteTitle: "Excluir",
+          deleteMessage:
+            "Todos os dados do produto serão perdidos. Tem certeza que quer confirmar essa ação?",
+        },
       },
       queues: {
         title: "Filas",
@@ -401,6 +465,30 @@ const messages = {
             "Todos os dados do usuário serão perdidos. Os tickets abertos deste usuário serão movidos para a fila.",
         },
       },
+      suppliers: {
+        title: "Fornecedores",
+        table: {
+          razaoSocial: "Razão social",
+          email: "Email",
+          nomeFantasia: "Nome fantasia",
+          telefone: "Telefone",
+          tipoJur: "Tipo jurídico",
+          endereco: "Endereço",
+          cnpj: "Cnpj",
+          actions: "Ações",
+        },
+        buttons: {
+          add: "Adicionar fornecedor",
+        },
+        toasts: {
+          deleted: "Fornecedor excluído com sucesso.",
+        },
+        confirmationModal: {
+          deleteTitle: "Excluir",
+          deleteMessage:
+            "Todos os dados do fornecedor serão perdidos. Os produtos relacionados a este fornecedor serão apagados.",
+        },
+      },
       settings: {
         success: "Configurações salvas com sucesso.",
         title: "Configurações",
@@ -410,75 +498,6 @@ const messages = {
             options: {
               enabled: "Ativado",
               disabled: "Desativado",
-            },
-          },
-        },
-      },
-      store: {
-        success: "Configurações salvas com sucesso.",
-        title: "Regras de Negócio",
-        name: "Nome da empresa",
-        email: "Email",
-        site: "Site da empresa",
-        actions: "ações",
-        storeModal: {
-          title: "Editar empresa",
-          form: {
-            name: "Nome da empresa",
-            email: "Email",
-            siteUrl: "Endereço do site",
-          },
-          buttons: {
-            okEdit: "Salvar",
-            cancel: "Cancelar",
-          },
-        },
-        pattern: {
-          title: "Padrões",
-          name: "nome do padrão",
-          utility: "utilidade",
-          pattern: "padrão",
-          target: "alvo",
-          filter: "filtro",
-          label: {
-            startsWith: "começa com",
-            finishesWith: "termina com",
-            contains: "contém",
-            matches: "igual",
-          },
-
-          actions: "ações",
-          buttons: {
-            add: "ADICIONAR PADRÃO",
-          },
-          patternModal: {
-            title: {
-              add: "Adicionar padrão",
-              edit: "Editar padrão",
-            },
-            form: {
-              name: "Nome do padrão",
-              utility: {
-                placeholder: "Função do padrão",
-                updateTicketQueue: "Mudar fila do ticket",
-                verifyContactFullName: "Editar nome completo",
-              },
-              filter: {
-                placeholder: "Tipo de filtro",
-                startsWith: "inicia com",
-                finishesWith: "termina com",
-                contains: "contém",
-                exactMatch: "correspondência exata",
-              },
-              pattern: "Padrão",
-              target: "Alvo",
-            },
-            success:
-              "O padrão foi adicionado com sucesso seu chatbot já está pronto para usá-lo.",
-            buttons: {
-              okAdd: "Adicionar",
-              okEdit: "Salvar",
-              cancel: "Cancelar",
             },
           },
         },

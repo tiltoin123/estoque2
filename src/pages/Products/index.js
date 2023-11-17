@@ -26,45 +26,44 @@ import Title from "../../components/Title";
 import api from "../../services/api";
 import { i18n } from "../../translate/i18n";
 import TableRowSkeleton from "../../components/TableRowSkeleton";
-import UserModal from "../../components/UserModal";
+import ProductModal from "../../components/ProductModal";
 import ConfirmationModal from "../../components/ConfirmationModal";
 import toastError from "../../errors/toastError";
 
 const reducer = (state, action) => {
-  if (action.type === "LOAD_USERS") {
-    const users = action.payload;
-    const newUsers = [];
+  if (action.type === "LOAD_PRODUCTS") {
+    const products = action.payload;
+    const newProducts = [];
 
-    users.forEach((user) => {
-      const userIndex = state.findIndex((u) => u.id === user.id);
-      if (userIndex !== -1) {
-        state[userIndex] = user;
+    products.forEach((product) => {
+      const productIndex = state.findIndex((p) => p.id === product.id);
+      if (productIndex !== -1) {
+        state[productIndex] = product;
       } else {
-        newUsers.push(user);
+        newProducts.push(product);
       }
     });
 
-    return [...state, ...newUsers];
+    return [...state, ...newProducts];
   }
 
-  if (action.type === "UPDATE_USERS") {
-    const user = action.payload;
-    const userIndex = state.findIndex((u) => u.id === user.id);
+  if (action.type === "UPDATE_PRODUCTS") {
+    const product = action.payload;
+    const productIndex = state.findIndex((p) => p.id === product.id);
 
-    if (userIndex !== -1) {
-      state[userIndex] = user;
+    if (productIndex !== -1) {
+      state[productIndex] = product;
       return [...state];
     } else {
-      return [user, ...state];
+      return [product, ...state];
     }
   }
+  if (action.type === "DELETE_PRODUCT") {
+    const productId = action.payload;
 
-  if (action.type === "DELETE_USER") {
-    const userId = action.payload;
-
-    const userIndex = state.findIndex((u) => u.id === userId);
-    if (userIndex !== -1) {
-      state.splice(userIndex, 1);
+    const productIndex = state.findIndex((p) => p.id === productId);
+    if (productIndex !== -1) {
+      state.splice(productIndex, 1);
     }
     return [...state];
   }
@@ -83,18 +82,18 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Users = () => {
+const Products = () => {
   const classes = useStyles();
 
   const [loading, setLoading] = useState(false);
   const [pageNumber, setPageNumber] = useState(1);
   const [hasMore, setHasMore] = useState(false);
-  const [selectedUser, setSelectedUser] = useState(null);
-  const [deletingUser, setDeletingUser] = useState(null);
-  const [userModalOpen, setUserModalOpen] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [deletingProduct, setDeletingProduct] = useState(null);
+  const [productModalOpen, setProductModalOpen] = useState(false);
   const [confirmModalOpen, setConfirmModalOpen] = useState(false);
   const [searchParam, setSearchParam] = useState("");
-  const [users, dispatch] = useReducer(reducer, []);
+  const [products, dispatch] = useReducer(reducer, []);
 
   useEffect(() => {
     dispatch({ type: "RESET" });
@@ -104,19 +103,19 @@ const Users = () => {
   useEffect(() => {
     setLoading(true);
     const delayDebounceFn = setTimeout(() => {
-      const fetchUsers = async () => {
+      const fetchProducts = async () => {
         try {
-          const { data } = await api.get("/users/", {
+          const { data } = await api.get("/products/", {
             params: { searchParam, pageNumber },
           });
-          dispatch({ type: "LOAD_USERS", payload: data.users });
+          dispatch({ type: "LOAD_PRODUCTS", payload: data.products });
           setHasMore(data.hasMore);
           setLoading(false);
         } catch (err) {
           toastError(err);
         }
       };
-      fetchUsers();
+      fetchProducts();
     }, 500);
     return () => clearTimeout(delayDebounceFn);
   }, [searchParam, pageNumber]);
@@ -124,13 +123,13 @@ const Users = () => {
   useEffect(() => {
     const socket = openSocket();
 
-    socket.on("user", (data) => {
+    socket.on("product", (data) => {
       if (data.action === "update" || data.action === "create") {
-        dispatch({ type: "UPDATE_USERS", payload: data.user });
+        dispatch({ type: "UPDATE_PRODUCTS", payload: data.product });
       }
 
       if (data.action === "delete") {
-        dispatch({ type: "DELETE_USER", payload: +data.userId });
+        dispatch({ type: "DELETE_PRODUCT", payload: +data.productsId });
       }
     });
 
@@ -139,33 +138,33 @@ const Users = () => {
     };
   }, []);
 
-  const handleOpenUserModal = () => {
-    setSelectedUser(null);
-    setUserModalOpen(true);
+  const handleOpenProductModal = () => {
+    setSelectedProduct(null);
+    setProductModalOpen(true);
   };
 
-  const handleCloseUserModal = () => {
-    setSelectedUser(null);
-    setUserModalOpen(false);
+  const handleCloseProductModal = () => {
+    setSelectedProduct(null);
+    setProductModalOpen(false);
   };
 
   const handleSearch = (event) => {
     setSearchParam(event.target.value.toLowerCase());
   };
 
-  const handleEditUser = (user) => {
-    setSelectedUser(user);
-    setUserModalOpen(true);
+  const handleEditProduct = (product) => {
+    setSelectedProduct(product);
+    setProductModalOpen(true);
   };
 
-  const handleDeleteUser = async (userId) => {
+  const handleDeleteProduct = async (productsId) => {
     try {
-      await api.delete(`/users/${userId}`);
-      toast.success(i18n.t("users.toasts.deleted"));
+      await api.delete(`/products/${productsId}`);
+      toast.success(i18n.t("products.toasts.deleted"));
     } catch (err) {
       toastError(err);
     }
-    setDeletingUser(null);
+    setDeletingProduct(null);
     setSearchParam("");
     setPageNumber(1);
   };
@@ -186,25 +185,25 @@ const Users = () => {
     <MainContainer>
       <ConfirmationModal
         title={
-          deletingUser &&
-          `${i18n.t("users.confirmationModal.deleteTitle")} ${
-            deletingUser.name
+          deletingProduct &&
+          `${i18n.t("products.confirmationModal.deleteTitle")} ${
+            deletingProduct.name
           }?`
         }
         open={confirmModalOpen}
         onClose={setConfirmModalOpen}
-        onConfirm={() => handleDeleteUser(deletingUser.id)}
+        onConfirm={() => handleDeleteProduct(deletingProduct.id)}
       >
-        {i18n.t("users.confirmationModal.deleteMessage")}
+        {i18n.t("products.confirmationModal.deleteMessage")}
       </ConfirmationModal>
-      <UserModal
-        open={userModalOpen}
-        onClose={handleCloseUserModal}
+      <ProductModal
+        open={productModalOpen}
+        onClose={handleCloseProductModal}
         aria-labelledby="form-dialog-title"
-        userId={selectedUser && selectedUser.id}
+        productsId={selectedProduct && selectedProduct.id}
       />
       <MainHeader>
-        <Title>{i18n.t("users.title")}</Title>
+        <Title>{i18n.t("products.title")}</Title>
         <MainHeaderButtonsWrapper>
           <TextField
             placeholder={i18n.t("contacts.searchPlaceholder")}
@@ -222,9 +221,9 @@ const Users = () => {
           <Button
             variant="contained"
             color="primary"
-            onClick={handleOpenUserModal}
+            onClick={handleOpenProductModal}
           >
-            {i18n.t("users.buttons.add")}
+            {i18n.t("products.buttons.add")}
           </Button>
         </MainHeaderButtonsWrapper>
       </MainHeader>
@@ -236,29 +235,45 @@ const Users = () => {
         <Table size="small">
           <TableHead>
             <TableRow>
-              <TableCell align="center">{i18n.t("users.table.name")}</TableCell>
               <TableCell align="center">
-                {i18n.t("users.table.email")}
+                {i18n.t("products.table.name")}
               </TableCell>
               <TableCell align="center">
-                {i18n.t("users.table.profile")}
+                {i18n.t("products.table.price")}
               </TableCell>
               <TableCell align="center">
-                {i18n.t("users.table.actions")}
+                {i18n.t("products.table.description")}
+              </TableCell>
+              <TableCell align="center">
+                {i18n.t("products.table.unity")}
+              </TableCell>
+              <TableCell align="center">
+                {i18n.t("products.table.quantity")}
+              </TableCell>
+              <TableCell align="center">
+                {i18n.t("products.table.supplier")}
+              </TableCell>
+              <TableCell align="center">
+                {i18n.t("products.table.actions")}
               </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             <>
-              {users.map((user) => (
-                <TableRow key={user.id}>
-                  <TableCell align="center">{user.name}</TableCell>
-                  <TableCell align="center">{user.email}</TableCell>
-                  <TableCell align="center">{user.profile}</TableCell>
+              {products.map((product) => (
+                <TableRow key={product.id}>
+                  <TableCell align="center">{product.name}</TableCell>
+                  <TableCell align="center">{product.price / 100}</TableCell>
+                  <TableCell align="center">{product.description}</TableCell>
+                  <TableCell align="center">{product.unity}</TableCell>
+                  <TableCell align="center">{product.quantity}</TableCell>
+                  <TableCell align="center">
+                    {product.supplier && product.supplier.nomeFantasia}
+                  </TableCell>
                   <TableCell align="center">
                     <IconButton
                       size="small"
-                      onClick={() => handleEditUser(user)}
+                      onClick={() => handleEditProduct(product)}
                     >
                       <EditIcon />
                     </IconButton>
@@ -267,7 +282,7 @@ const Users = () => {
                       size="small"
                       onClick={(e) => {
                         setConfirmModalOpen(true);
-                        setDeletingUser(user);
+                        setDeletingProduct(product);
                       }}
                     >
                       <DeleteOutlineIcon />
@@ -275,7 +290,7 @@ const Users = () => {
                   </TableCell>
                 </TableRow>
               ))}
-              {loading && <TableRowSkeleton columns={4} />}
+              {loading && <TableRowSkeleton columns={7} />}
             </>
           </TableBody>
         </Table>
@@ -284,4 +299,4 @@ const Users = () => {
   );
 };
 
-export default Users;
+export default Products;

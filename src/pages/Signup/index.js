@@ -81,7 +81,6 @@ const SignUp = () => {
 
   const initialState = {
     storeName: "",
-    siteUrl: "",
     name: "",
     email: "",
     password: "",
@@ -137,20 +136,7 @@ const SignUp = () => {
                     autoFocus
                   />
                 </Grid>
-                <Grid item xs={12}>
-                  <Field
-                    as={TextField}
-                    autoComplete="siteUrl"
-                    name="siteUrl"
-                    error={touched.storeName && Boolean(errors.storeName)}
-                    helperText={touched.storeName && errors.storeName}
-                    variant="outlined"
-                    fullWidth
-                    id="siteUrl"
-                    label={i18n.t("signup.Form.site")}
-                    autoFocus
-                  />
-                </Grid>
+                <Grid item xs={12}></Grid>
                 <Grid item xs={12}>
                   <Field
                     as={TextField}
