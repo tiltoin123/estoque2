@@ -30,7 +30,7 @@ const reducer = (state, action) => {
   }
 };
 
-const ProductSupplierSelect = ({ selectedSupplier, onChange }) => {
+const ProductSupplierSelect = ({ selectedSupplierId, onChange }) => {
   const classes = useStyles();
   const [state, dispatch] = useReducer(reducer, initialState);
   const [loading, setLoading] = useState(false);
@@ -45,7 +45,7 @@ const ProductSupplierSelect = ({ selectedSupplier, onChange }) => {
       const fetchSuppliers = async () => {
         try {
           const { data } = await api.get("/suppliers", {});
-          dispatch({ type: "LOAD_SUPPLIERS", payload: data });
+          dispatch({ type: "LOAD_SUPPLIERS", payload: data.suppliers });
           setLoading(false);
         } catch (err) {
           toastError(err);
@@ -56,23 +56,25 @@ const ProductSupplierSelect = ({ selectedSupplier, onChange }) => {
     return () => clearTimeout(delayDebounceFn);
   }, []);
 
-  const { suppliers } = state.suppliers;
+  console.log("selectsuipplioerID", selectedSupplierId);
+  //console.log("selecasdq1231", selectedSupplier);
+  const suppliers = state.suppliers;
+  console.log("suppliers", suppliers);
+
+  const selectedSupplier = suppliers.find(
+    (supplier) => supplier.id === selectedSupplierId
+  );
+
   return (
     <div
       style={{ width: 300, marginTop: 0, marginLeft: -8 }}
       className={classes.multFieldLine}
     >
       <FormControl fullWidth margin="dense" className={classes.formControl}>
-        {/* <InputLabel
-          id="profile-selection-input-label"
-          style={{ marginBottom: "80px" }}
-        >
-          {i18n.t("productModal.form.unity")}
-        </InputLabel> */}
         <Select
           displayEmpty
           variant="outlined"
-          value={selectedSupplier ? selectedSupplier : ""}
+          value={selectedSupplierId}
           onChange={handleChange}
           MenuProps={{
             anchorOrigin: {
@@ -86,8 +88,8 @@ const ProductSupplierSelect = ({ selectedSupplier, onChange }) => {
             getContentAnchorEl: null,
           }}
           renderValue={() =>
-            selectedSupplier && selectedSupplier != ""
-              ? selectedSupplier
+            selectedSupplier && selectedSupplier.nomeFantasia
+              ? selectedSupplier.nomeFantasia
               : i18n.t("productModal.form.supplier")
           }
         >

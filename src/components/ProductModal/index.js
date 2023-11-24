@@ -80,9 +80,8 @@ const ProductModal = ({ open, onClose, productsId }) => {
       if (!productsId) return;
       try {
         const { data } = await api.get(`/products/${productsId}`);
-        setProduct((prevState) => {
-          return { ...prevState, ...data };
-        });
+        setSelectedSupplier(data.supplierId);
+        setProduct(data);
       } catch (err) {
         toastError(err);
       }
@@ -181,7 +180,7 @@ const ProductModal = ({ open, onClose, productsId }) => {
                     fullWidth
                   >
                     <MenuItem value="metro">Metro</MenuItem>
-                    <MenuItem value="grama">grama</MenuItem>
+                    <MenuItem value="kilograma">kilograma</MenuItem>
                     <MenuItem value="unidade">Unidade</MenuItem>
                   </Field>
                   <FormControl
@@ -202,7 +201,7 @@ const ProductModal = ({ open, onClose, productsId }) => {
                       style={{ width: 300, marginTop: 0, marginLeft: -8 }}
                     />
                     <ProductSupplierSelect
-                      selectedSupplier={selectedSupplier}
+                      selectedSupplierId={selectedSupplier}
                       onChange={(value) => setSelectedSupplier(value)}
                     />
                   </FormControl>

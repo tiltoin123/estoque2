@@ -280,6 +280,7 @@ const messages = {
           name: "Nome",
           quantity: "Quantidade",
           unity: "Unidade",
+          description: "Descrição",
           price: "Preço",
           whatsapp: "Conexão Padrão",
           supplier: "Fornecedor",

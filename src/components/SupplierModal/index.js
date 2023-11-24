@@ -170,9 +170,7 @@ const SupplierModal = ({ open, onClose, supplierId }) => {
       if (!supplierId) return;
       try {
         const { data } = await api.get(`/suppliers/${supplierId}`);
-        setSupplier((prevState) => {
-          return { ...prevState, ...data };
-        });
+        setSupplier(data);
       } catch (err) {
         toastError(err);
       }
